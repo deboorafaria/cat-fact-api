@@ -1,0 +1,2832 @@
+{
+	"info": {
+		"_postman_id": "cddda7ae-8c02-4df8-aa57-fcaa5ac48a66",
+		"name": "Cat Fact API",
+		"description": "An API for facts about cats\n\nContact Support:\n Email: contact@catfact.ninja",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43996206",
+		"_collection_link": "https://speeding-shadow-7578152.postman.co/workspace/D%C3%A9bora-Faria's-Workspace~51cef88c-a72b-4079-852c-eeea957d53d3/collection/43996206-cddda7ae-8c02-4df8-aa57-fcaa5ac48a66?action=share&source=collection_link&creator=43996206"
+	},
+	"item": [
+		{
+			"name": "fact",
+			"item": [
+				{
+					"name": "Get Random Fact_CT01 -  Obter um fato aleatório sobre gatos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/* \r",
+									"CT01 -  Obter um fato aleatório sobre gatos\r",
+									"Dado que o usuário tenha acesso à API \r",
+									"E tenha o endpoint https://catfact.ninja/fact \r",
+									"Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado\r",
+									"Então a requisição será enviada com sucesso\r",
+									"E o sistema retornará uma resposta no formato JSON contendo fatos aleatórios sobre gatos\r",
+									"E o código de status da resposta será 200 - OK. \r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status da resposta é 200 (OK)\r",
+									"pm.test(\"1 - Verificar se o código de status é 200\", function () {\r",
+									"    pm.response.to.have.status(200); // Valida que o código de status é 200\r",
+									"});\r",
+									"\r",
+									"// 2. Teste para verificar se o JSON contém a propriedade 'fact' (o fato sobre o gato)\r",
+									"pm.test(\"2 - Verificar se o JSON contém a propriedade 'fact'\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai a resposta como JSON\r",
+									"    pm.expect(jsonData).to.have.property(\"fact\"); // Valida que o campo 'fact' existe\r",
+									"});\r",
+									"\r",
+									"// 3. Teste para verificar se a propriedade 'fact' é uma string não vazia\r",
+									"pm.test(\"3 - Verificar se a propriedade 'fact' é uma string não vazia\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(jsonData.fact).to.be.a(\"string\").that.is.not.empty; // Valida que 'fact' é uma string não vazia\r",
+									"});\r",
+									"\r",
+									"// 4. Teste para verificar o cabeçalho 'Content-Type'\r",
+									"pm.test(\"4 - Verificar cabeçalho Content-Type\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.equal(\"application/json\"); // Valida que o Content-Type é JSON\r",
+									"});\r",
+									"\r",
+									"// 5- Verifica se os parâmetros da requisição estão vazios\r",
+									"pm.test(\"5 - Verificar se nenhum dado foi enviado na aba de params\", function () {\r",
+									"    let params = pm.request.url.query; // Obtém os parâmetros da URL\r",
+									"    \r",
+									"    pm.expect(params.count(), \"Os parâmetros não estão vazios\").to.equal(0); // Valida que a aba de params está vazia\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/fact",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"fact"
+							],
+							"query": [
+								{
+									"key": "max_length",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Returns a random fact"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Random Fact_CT02 -  Obter um fato aleatório sobre gatos com parâmetro ‘max_length' com valor igual a vazio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT02:  Obter um fato aleatório sobre gatos com parâmetro ‘max_length' com valor igual a vazio\r",
+									"Dado que o usuário tenha acesso à API \r",
+									"E tenha o endpoint https://catfact.ninja/fact \r",
+									"Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado\r",
+									"E adicionar o parâmetro ‘max_length'\r",
+									"Então a requisição será enviada com sucesso\r",
+									"E o sistema retornará uma resposta no formato JSON contendo uma lista de fatos aleatório sobre gatos contendo no máximo o valor estimado de caracteres. \r",
+									"E o código de status da resposta será 200 - OK.\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status da resposta é 200 (OK)\r",
+									"pm.test(\"1 - Código de status é 200\", function () {\r",
+									"    pm.response.to.have.status(200); // Valida que o código de status retornado é 200\r",
+									"});\r",
+									"\r",
+									"// 2. Teste para verificar se a propriedade 'fact' existe\r",
+									"pm.test(\"2 - A resposta contém a propriedade 'fact'\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(jsonData).to.have.property(\"fact\"); // Verifica se a propriedade 'fact' existe\r",
+									"});\r",
+									"\r",
+									"// 3. Teste para verificar se a propriedade 'fact' é uma string não vazia\r",
+									"pm.test(\"3 - A propriedade 'fact' é uma string não vazia\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(jsonData.fact).to.be.a(\"string\").that.is.not.empty; // Valida que o valor de 'fact' é uma string não vazia\r",
+									"});\r",
+									"\r",
+									"// 4. Teste para verificar se o parâmetro 'max_length' está vazio\r",
+									"pm.test(\"4 - O parâmetro 'max_length' está vazio\", function () {\r",
+									"    const queryParams = pm.request.url.query; // Obtém os parâmetros da URL\r",
+									"    const maxLength = queryParams.get(\"max_length\"); // Recupera o valor do parâmetro 'max_length'\r",
+									"    pm.expect(maxLength, \"O parâmetro 'max_length' não está vazio!\").to.equal(\"\"); // Valida que 'max_length' está vazio\r",
+									"});\r",
+									"\r",
+									"// 5. Teste para verificar o cabeçalho 'Content-Type'\r",
+									"pm.test(\"5 - Verificar cabeçalho 'Content-Type' é JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.equal(\"application/json\"); // Valida que o Content-Type é JSON\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/fact?max_length=",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"fact"
+							],
+							"query": [
+								{
+									"key": "max_length",
+									"value": "",
+									"description": "Tamanho máximo de caracteres do fato"
+								}
+							]
+						},
+						"description": "Returns a random fact"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Random Fact _CT03 -  Obter um fato aleatório sobre gatos com parâmetro ‘max_length' com  valor igual a zero (0)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT03:  Obter um fato aleatório sobre gatos com parâmetro ‘max_length' com  valor igual a zero (0)\r",
+									"Dado que o usuário tenha acesso à API \r",
+									"E tenha o endpoint https://catfact.ninja/fact \r",
+									"Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado\r",
+									"E adicionar o parâmetro \r",
+									"E inserir um value = 0\r",
+									"Então a requisição será enviada com sucesso\r",
+									"E o sistema listará uma resposta no formato JSON contendo a estrutura de dados do tipo ‘data’ como vazio\r",
+									"E o código de status da resposta será 200 - OK.\r",
+									"*/\r",
+									"\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status da resposta é 200 (OK)\r",
+									"pm.test(\"1 - Código de status é 200\", function () {\r",
+									"    pm.response.to.have.status(200); // Valida que o código de status retornado é 200\r",
+									"});\r",
+									"\r",
+									"// 2. Teste para verificar se o parâmetro 'max_length' foi enviado e tem valor zero\r",
+									"pm.test(\"2 - O parâmetro 'max_length' tem valor igual a 0\", function () {\r",
+									"    const queryParams = pm.request.url.query; // Obtém os parâmetros da URL\r",
+									"    const maxLength = queryParams.get(\"max_length\"); // Recupera o valor do parâmetro 'max_length'\r",
+									"    pm.expect(maxLength, \"O parâmetro 'max_length' não é 0!\").to.equal(\"0\"); // Valida que o valor de 'max_length' é igual a 0\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// 3. Verificar se o retorno do fato aleatório é vazio \r",
+									"pm.test(\"3 - A resposta está vazia como esperado\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"\r",
+									"    // Valida que o JSON retornado está vazio (não contém propriedades)\r",
+									"    pm.expect(Object.keys(jsonData).length, \"O JSON não está vazio como esperado\").to.equal(0);\r",
+									"});\r",
+									"\r",
+									"// 4. Teste para verificar o cabeçalho 'Content-Type'\r",
+									"pm.test(\"4 - Verificar cabeçalho 'Content-Type' é JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.equal(\"application/json\"); // Valida que o Content-Type é JSON\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/fact?max_length=0",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"fact"
+							],
+							"query": [
+								{
+									"key": "max_length",
+									"value": "0",
+									"description": "Tamanho máximo de caracteres do fato"
+								}
+							]
+						},
+						"description": "Returns a random fact"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Random Fact_CT04 - No campo ‘max_length' informar um valor do tipo número inteiro",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/* \r",
+									"CT04: No campo ‘max_length' informar um valor do tipo número inteiro \r",
+									"Dado que o usuário tenha acesso à API \r",
+									"E tenha o endpoint https://catfact.ninja/fact \r",
+									"Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado \r",
+									"E adicionar o parâmetro 'max_length' \r",
+									"E inserir um value = [inserir um número inteiro positivo, ex: 35]\r",
+									" Então a requisição será enviada com sucesso \r",
+									"E o código de status da resposta será 200 - OK \r",
+									"E o sistema retornará uma resposta no formato JSON contendo uma lista de fatos aleatórios sobre gatos, contendo a estrutura de dados do tipo ‘fact’ com uma string de tamanho menor ou igual a [o número inteiro inserido].\r",
+									"E o campo ‘length’ terá um valor numérico menor ou igual a [o número inteiro inserido].\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status da resposta é 200 (OK)\r",
+									"pm.test(\"1 - Código de status é 200\", function () {\r",
+									"    pm.response.to.have.status(200); // Valida que o código de status retornado é 200\r",
+									"});\r",
+									"\r",
+									"// 2. Valida que o parâmetro 'max_length' é um número inteiro\r",
+									"pm.test('2 - Verificar se é permitido inserir um valor é um numero inteiro', function (){\r",
+									"    var maxLength = pm.request.url.query.get('max_length');\r",
+									"    var parsedValue = parseInt(maxLength); // Converte para número inteiro\r",
+									"    pm.expect(parsedValue).to.be.an('Number');\r",
+									"    pm.expect(Number.isInteger(parsedValue), \"O valor não é um número inteiro\").to.be.true; \r",
+									"})\r",
+									"\r",
+									"// 3. Verifica se o campo 'fact' existe na resposta\r",
+									"pm.test(\"3 - O campo 'fact' deve existir\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(jsonData, \"O campo 'fact' está ausente\").to.have.property(\"fact\");\r",
+									"});\r",
+									"\r",
+									"// 4. Verifica se o campo 'fact' é uma string com tamanho menor ou igual ao valor informado\r",
+									"pm.test(\"4 - O campo 'fact' deve ter tamanho do valor informado\", function () {\r",
+									"    var maxLength = pm.request.url.query.get('max_length');\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"   var parsedValue = parseInt(maxLength); // Converte para número inteiro\r",
+									"    pm.expect(parsedValue, \"O campo 'fact' excede o tamanho máximo inserido\").greaterThanOrEqual(jsonData.fact.length);\r",
+									"});\r",
+									"\r",
+									"// 5. Verifica se o campo 'length' existe na resposta\r",
+									"pm.test(\"5 - O campo 'length' deve existir\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(jsonData, \"O campo 'length' está ausente\").to.have.property(\"length\");\r",
+									"});\r",
+									"\r",
+									"// 6. Valida que o campo 'length' contém valor numérico menor ou igual ao valor informado\r",
+									"pm.test(\"6 - O campo 'length' deve ter valor ao valor igual ou menor ao valor informado\", function () {  \r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    var maxLength = pm.request.url.query.get('max_length');\r",
+									"   var parsedValue = parseInt(maxLength); // Converte para número inteiro\r",
+									"    pm.expect(jsonData.length, \"O campo 'length' excede o valor informado\").to.be.at.most(parsedValue);\r",
+									"});\r",
+									"\r",
+									"// 7. Verifica que o cabeçalho 'Content-Type' é 'application/json'\r",
+									"pm.test(\"7 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/fact?max_length=100",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"fact"
+							],
+							"query": [
+								{
+									"key": "max_length",
+									"value": "100",
+									"description": "Tamanho máximo de caracteres do fato"
+								}
+							]
+						},
+						"description": "Returns a random fact"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Random Fact_CT05 - Obter um fato aleatório sobre gatos com params 'max_length' com valor string",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT05: Obter um fato aleatório sobre gatos com params 'max_length' com valor string \r",
+									"Dado que o usuário tenha acesso à API \r",
+									"E tenha o endpoint https://catfact.ninja/fact \r",
+									"Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado \r",
+									"E adicionar o parâmetro 'max_length'\r",
+									"E inserir um value = [inserir uma string, ex: abc] \r",
+									"Então a requisição será enviada com falha \r",
+									"E o código de status da resposta será 400 - Bad Request \r",
+									"E o sistema retornará uma resposta no formato JSON contendo uma mensagem de erro indicando que o parâmetro ‘max_length' deve ser um número inteiro válido.\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status é 400 - Bad Request\r",
+									"pm.test(\"1 - O código de status deve ser 400 - Bad Request\", function () {\r",
+									"    pm.expect(pm.response.statusCode, \"O código de status não é 400\").to.equal(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"2 - A resposta está vazia como esperado\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    \r",
+									"    // Valida que o JSON retornado está vazio (não contém propriedades)\r",
+									"    pm.expect(Object.keys(jsonData).length, \"O JSON não está vazio como esperado\").to.equal(0);\r",
+									"});\r",
+									"\r",
+									"// 3. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"3 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/fact?max_length=DBR",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"fact"
+							],
+							"query": [
+								{
+									"key": "max_length",
+									"value": "DBR",
+									"description": "Tamanho máximo de caracteres do fato"
+								}
+							]
+						},
+						"description": "Returns a random fact"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Random Fact_CT06 - Obter um fato aleatório sobre gatos com parâmetro ‘max_length' com valor negativo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT06: Obter um fato aleatório sobre gatos com parâmetro ‘max_length' com valor negativo \r",
+									"Dado que o usuário tenha acesso à API \r",
+									"E tenha o endpoint https://catfact.ninja/fact \r",
+									"Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado \r",
+									"E adicionar o parâmetro 'max_length'\r",
+									"E inserir um value = [inserir um número inteiro negativo, ex: -5] \r",
+									"Então a requisição será enviada com sucesso\r",
+									"E o código de status da resposta será  200 - OK  \r",
+									"E o sistema retornará uma resposta no formato JSON vazio. \r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status da resposta é 200 (OK)\r",
+									"pm.test(\"1 - Código de status é 200\", function () {\r",
+									"    pm.response.to.have.status(200); // Valida que o código de status retornado é 200\r",
+									"});\r",
+									"\r",
+									"// 2. Verificar que o JSON estar vazio\r",
+									"pm.test(\"2 - A resposta está vazia como esperado\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    \r",
+									"    // Valida que o JSON retornado está vazio (não contém propriedades)\r",
+									"    pm.expect(Object.keys(jsonData).length, \"O JSON está vazio como esperado\").to.equal(0);\r",
+									"});\r",
+									"\r",
+									"// 3. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"3 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/fact?max_length=-5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"fact"
+							],
+							"query": [
+								{
+									"key": "max_length",
+									"value": "-5",
+									"description": "Tamanho máximo de caracteres do fato"
+								}
+							]
+						},
+						"description": "Returns a random fact"
+					},
+					"response": []
+				}
+			],
+			"description": "# **Get random fact**\n\n**Busca por fatos aleatórios.**\n\n| **Requisição** |  \n| **URL** | **Autenticação por Requisição:** [<b>https://catfact.ninja/fact</b>](https://catfact.ninja/fact) |  \n| **Método** | **GET** |\n\n| **Params** |  \n| **Name** | **Type** | **Value** | **Description** | **Obrigatório** |  \n| **Params** | **'max_length'** | **Do tipo inteiro** | **Tamanho máximo do fato retornado** | **Não** |\n\n## **Cenário de teste**\n\n**CT01: Obter um fato aleatório sobre gatos**\n\n- **Dado que o usuário tenha acesso à API**\n    \n    - **E tenha o endpoint** [<b>https://catfact.ninja/fact</b>](https://catfact.ninja/fact)\n        \n- **Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado**\n    \n- **Então a requisição será enviada com sucesso**\n    \n    - **E o sistema retornará uma resposta no formato JSON contendo fatos aleatórios sobre gatos**\n        \n    - **E o código de status da resposta será 200 - OK.**\n        \n\n**CT02: Obter um fato aleatório sobre gatos com parâmetro ‘max_length' com valor igual a vazio**\n\n- **Dado que o usuário tenha acesso à API**\n    \n    - **E tenha o endpoint** [<b>https://catfact.ninja/fact</b>](https://catfact.ninja/fact)\n        \n- **Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado**\n    \n    - **E adicionar o parâmetro ‘max_length'**\n        \n- **Então a requisição será enviada com sucesso**\n    \n    - **E o sistema retornará uma resposta no formato JSON contendo uma lista de fatos aleatório sobre gatos contendo no máximo o valor estimado de caracteres.**\n        \n    - **E o código de status da resposta será 200 - OK.**\n        \n\n**CT03: Obter um fato aleatório sobre gatos com parâmetro ‘max_length' com valor igual a zero (0)**\n\n- **Dado que o usuário tenha acesso à API**\n    \n    - **E tenha o endpoint** [<b>https://catfact.ninja/fact</b>](https://catfact.ninja/fact)\n        \n- **Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado**\n    \n    - **E adicionar o parâmetro**\n        \n    - **E inserir um value = 0**\n        \n- **Então a requisição será enviada com sucesso**\n    \n    - **E o sistema listará uma resposta no formato JSON contendo a estrutura de dados do tipo ‘data’ como vazio**\n        \n    - **E o código de status da resposta será 200 - OK.**\n        \n\n**CT04: No campo ‘max_length' informar um valor do tipo número inteiro x**\n\n- **Dado que o usuário tenha acesso à API**\n    \n    - **E tenha o endpoint** [<b>https://catfact.ninja/fact</b>](https://catfact.ninja/fact)\n        \n- **Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado**\n    \n    - **E adicionar o parâmetro 'max_length'**\n        \n    - **E inserir um value = \\[inserir um número inteiro positivo, ex: 35\\]**\n        \n- **Então a requisição será enviada com sucesso**\n    \n    - **E o código de status da resposta será 200 - OK**\n        \n    - **E o sistema retornará uma resposta no formato JSON contendo uma lista de fatos aleatórios sobre gatos, contendo a estrutura de dados do tipo ‘fact’ com uma string de tamanho menor ou igual a \\[o número inteiro inserido\\].**\n        \n    - **E o campo ‘length’ terá um valor numérico menor ou igual a \\[o número inteiro inserido\\].**\n        \n\n**CT05: Obter um fato aleatório sobre gatos com params 'max_length' com valor string**\n\n- **Dado que o usuário tenha acesso à API**\n    \n    - **E tenha o endpoint** [<b>https://catfact.ninja/fact</b>](https://catfact.ninja/fact)\n        \n- **Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado**\n    \n    - **E adicionar o parâmetro 'max_length'**\n        \n    - **E inserir um value = \\[inserir uma string, ex: abc\\]**\n        \n- **Então a requisição será enviada com falha**\n    \n    - **E o código de status da resposta será 400 - Bad Request**\n        \n    - **E o sistema retornará uma resposta no formato JSON contendo uma mensagem de erro indicando que o parâmetro ‘max_length' deve ser um número inteiro válido.**\n        \n\n| **Descrição do teste realizado** |  \n| **Resultado Esperado:**\n\n**De acordo com a documentação fornecida, o parâmetro ‘max_length’ aceita apenas números inteiros. Portanto, o comportamento esperado para essa requisição seria o retorno de um código 400 - Bad Request.** |  \n| **Resultado obtido:****Foi realizado um teste utilizando o Postman com a seguinte requisição:** [<b>https://catfact.ninja/facts?max_length=dbr</b>](https://catfact.ninja/facts?max_length=dbr) **com o retorno 200 - Ok e foi apresentado uma lista de fatos aleatórios com tamanhos variados.** |  \n| **Teste Adicional:**\n\n**Para confirmar o comportamento, o teste foi executado diretamente na documentação da API. O retorno foi a seguinte mensagem de erro: “Corrija os seguintes erros de validação e tente novamente. Para 'max_length': O valor deve ser um número inteiro.”** |  \n| \\*_Documentação API__\\*_\n\n<img src=\"https://lh7-rt.googleusercontent.com/docsz/AD_4nXdwdcLBXz0JYIJXiOCXJ942T00LiHLJEqkoEiZezo6irXxB47NDy0_A0n_3bfHbIo-0Lu5NkdjXOfW0dm4JaOYuCI6ZbD4ifbQZBD5HBI61-fm077HW8MULwDz7_TtQ2KvkEOY4?key=qRvUs82V0jSZO9QKThuf2kfe\">\n\n|  \n| **POSTMAN** |  \n| \\*_Request:__\\*_\n\n<img src=\"https://lh7-rt.googleusercontent.com/docsz/AD_4nXexNZoVmLIx2PSFigOzs0OVyCiRBEBztfTB1fFW3WdOl8A4AlTVINHL6HrAKJ3Zwdn4Ru5hJoHhLk5NuiVdf-VwehILWxymum5WXODqA4OqMcwtrHlSLhqJ12uOm4szRMB9jEVG5w?key=qRvUs82V0jSZO9QKThuf2kfe\">\n\n|  \n| **Retorno Json:** |\n\n``` json\n{\n    \"current_page\": 1,\n    \"data\": [\n        {\n            \"fact\": \"Unlike dogs, cats do not have a sweet tooth. Scientists believe this is due to a mutation in a key taste receptor.\",\n            \"length\": 114\n        },\n        {\n            \"fact\": \"When a cat chases its prey, it keeps its head level. Dogs and humans bob their heads up and down.\",\n            \"length\": 97\n        },\n        {\n            \"fact\": \"The technical term for a cat’s hairball is a “bezoar.”\",\n            \"length\": 54\n        },\n        {\n            \"fact\": \"A group of cats is called a “clowder.”\",\n            \"length\": 38\n        },\n        {\n            \"fact\": \"A cat can’t climb head first down a tree because every claw on a cat’s paw points the same way. To get down from a tree, a cat must back down.\",\n            \"length\": 142\n        },\n        {\n            \"fact\": \"Cats make about 100 different sounds. Dogs make only about 10.\",\n            \"length\": 62\n        },\n        {\n            \"fact\": \"Every year, nearly four million cats are eaten in Asia.\",\n            \"length\": 55\n        },\n        {\n            \"fact\": \"There are more than 500 million domestic cats in the world, with approximately 40 recognized breeds.\",\n            \"length\": 100\n        },\n        {\n            \"fact\": \"Approximately 24 cat skins can make a coat.\",\n            \"length\": 43\n        },\n        {\n            \"fact\": \"While it is commonly thought that the ancient Egyptians were the first to domesticate cats, the oldest known pet cat was recently found in a 9,500-year-old grave on the Mediterranean island of Cyprus. This grave predates early Egyptian art depicting cats by 4,000 years or more.\",\n            \"length\": 278\n        }\n    ],\n    \"first_page_url\": \"https://catfact.ninja/facts?page=1\",\n    \"from\": 1,\n    \"last_page\": 34,\n    \"last_page_url\": \"https://catfact.ninja/facts?page=34\",\n    \"links\": [\n        {\n            \"url\": null,\n            \"label\": \"Previous\",\n            \"active\": false\n        },\n        {\n            \"url\": \"https://catfact.ninja/facts?page=1\",\n            \"label\": \"1\",\n            \"active\": true\n        },\n        {\n            \"url\": \"https://catfact.ninja/facts?page=2\",\n            \"label\": \"2\",\n            \"active\": false\n        },\n        {\n            \"url\": \"https://catfact.ninja/facts?page=3\",\n            \"label\": \"3\",\n            \"active\": false\n        },\n        {\n            \"url\": \"https://catfact.ninja/facts?page=4\",\n            \"label\": \"4\",\n            \"active\": false\n        },\n        {\n            \"url\": \"https://catfact.ninja/facts?page=5\",\n            \"label\": \"5\",\n            \"active\": false\n        },\n        {\n            \"url\": \"https://catfact.ninja/facts?page=6\",\n            \"label\": \"6\",\n            \"active\": false\n        },\n        {\n            \"url\": \"https://catfact.ninja/facts?page=7\",\n            \"label\": \"7\",\n            \"active\": false\n        },\n        {\n            \"url\": \"https://catfact.ninja/facts?page=8\",\n            \"label\": \"8\",\n            \"active\": false\n        },\n        {\n            \"url\": \"https://catfact.ninja/facts?page=9\",\n            \"label\": \"9\",\n            \"active\": false\n        },\n        {\n            \"url\": \"https://catfact.ninja/facts?page=10\",\n            \"label\": \"10\",\n            \"active\": false\n        },\n        {\n            \"url\": null,\n            \"label\": \"...\",\n            \"active\": false\n        },\n        {\n            \"url\": \"https://catfact.ninja/facts?page=33\",\n            \"label\": \"33\",\n            \"active\": false\n        },\n        {\n            \"url\": \"https://catfact.ninja/facts?page=34\",\n            \"label\": \"34\",\n            \"active\": false\n        },\n        {\n            \"url\": \"https://catfact.ninja/facts?page=2\",\n            \"label\": \"Next\",\n            \"active\": false\n        }\n    ],\n    \"next_page_url\": \"https://catfact.ninja/facts?page=2\",\n    \"path\": \"https://catfact.ninja/facts\",\n    \"per_page\": 10,\n    \"prev_page_url\": null,\n    \"to\": 10,\n    \"total\": 332\n  } |\n\n ```\n\n| **Return Postman:**\n\n<img src=\"https://lh7-rt.googleusercontent.com/docsz/AD_4nXfJqzCFX01Y4JuPWKA3YZ7AzDJalW6UNwK6SnxyQ849QLVTRe2S4B-2-t9ue7SgRM-em4Ou48vQWOJq2hf4wXAM589UuMk6ROuZnJ5Eki_3tiXLMkHyufIjnuPn47AOA_J_WzaHjw?key=qRvUs82V0jSZO9QKThuf2kfe\">\n\n|\n\n**CT06: Obter um fato aleatório sobre gatos com parâmetro ‘max_length' com valor negativo**\n\n- **Dado que o usuário tenha acesso à API**\n    \n    - **E tenha o endpoint** [<b>https://catfact.ninja/fact</b>](https://catfact.ninja/fact)\n        \n- **Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado**\n    \n    - **E adicionar o parâmetro 'max_length'**\n        \n    - **E inserir um value = \\[inserir um número inteiro negativo, ex: -5\\]**\n        \n- **Então a requisição será enviada com falha**\n    \n    - **E o código de status da resposta será 400 - Bad Request**\n        \n\n**E o sistema retornará uma resposta no formato JSON contendo uma mensagem de erro indicando que o parâmetro ‘max_length' deve ser um número inteiro não negativo.**EndFragment",
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "facts",
+			"item": [
+				{
+					"name": "Get a list of facts_CT01 - Obter um fato aleatório sobre gatos com parâmetro ‘max_length’ com valor negativo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT01 - Obter um fato aleatório sobre gatos com parâmetro ‘max_length’ com valor negativo\r",
+									"Dado que o usuário tenha acesso à API\r",
+									"E tenha o endpoint https://catfact.ninja/facts\r",
+									"Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado\r",
+									"E adicionar o parâmetro 'max_length'\r",
+									"E inserir um value = -5\r",
+									"Então a requisição será enviada com sucesso\r",
+									"E o código de status da resposta será  200 - OK  \r",
+									"E o sistema retornará uma resposta no formato JSON vazio.\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status é 200 - OK\r",
+									"pm.test(\"1 - Código de status é 200.\", function () {\r",
+									"    pm.response.to.have.status(200); // Valida que o código de status retornado é 200\r",
+									"});\r",
+									"// 2. Verificar que o campo 'data' existe\r",
+									"pm.test(\"2 - O campo 'data' deve conter uma lista  vazia.\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(jsonData, \"O campo 'data' existe\").to.have.property(\"data\");\r",
+									"    pm.expect(jsonData.data, \"O campo 'data'contém uma lista vazia\").to.be.an(\"array\").that.has.lengthOf(0);\r",
+									"});\r",
+									"\r",
+									"// 3. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"3 - O cabeçalho 'Content-Type' deve ser JSON.\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/facts?max_length=-5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"facts"
+							],
+							"query": [
+								{
+									"key": "max_length",
+									"value": "-5"
+								}
+							]
+						},
+						"description": "Returns a a list of facts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a list of facts_CT02 - Obter um fato aleatório sobre gatos com parâmetro ‘max_length’ com valor zero",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT02 - Obter um fato aleatório sobre gatos com parâmetro ‘max_length’ com valor zero\r",
+									"Dado que o usuário tenha acesso à API\r",
+									"E tenha o endpoint https://catfact.ninja/facts\r",
+									"Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado\r",
+									"E adicionar o parâmetro 'max_length'\r",
+									"E inserir um value = 0\r",
+									"Então a requisição será enviada com sucesso\r",
+									"E o código de status da resposta será 200 - OK\r",
+									"E o sistema retornará uma resposta no formato JSON contendo a estrutura de dados do tipo ‘fact’ com uma string vazia\r",
+									"E o campo ‘length’ terá o valor 0.\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status da resposta é 200 (OK)\r",
+									"pm.test(\"1 - Código de status é 200.\", function () {\r",
+									"    pm.response.to.have.status(200); // Valida que o código de status retornado é 200\r",
+									"});\r",
+									"\r",
+									"// 2. Verificar que o campo 'data' existe e é uma lista vazia.\r",
+									"pm.test(\"2 - O campo 'data' deve existir e ser uma lista vazia.\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"        var listSize = jsonData.data.length; // O tamanho do retorno da lista\r",
+									"    pm.expect(0).equals(listSize); // A lista é maior que zero\r",
+									"    });\r",
+									"\r",
+									"// 3. Verificar que o campo 'total' existe e contém o valor 0.\r",
+									"pm.test(\"3 - O campo 'total' deve existir e conter o valor 0.\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(jsonData, \"O campo 'total' existe\").to.have.property(\"total\");\r",
+									"    pm.expect(jsonData.total, \"O campo 'total' não contém o valor esperado\").to.equal(0);\r",
+									"});\r",
+									"\r",
+									"// 4. Verificar cabeçalho 'Content-Type' para garantir que é JSON.\r",
+									"pm.test(\"4 - O cabeçalho 'Content-Type' deve ser JSON.\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/facts?max_length=0",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"facts"
+							],
+							"query": [
+								{
+									"key": "max_length",
+									"value": "0",
+									"description": "maximum length of returned fact"
+								}
+							]
+						},
+						"description": "Returns a a list of facts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a list of facts_CT03 -  Obter um fato aleatório sobre gatos com parâmetro ‘max_length’ com valor inteiro",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT03 -  Obter um fato aleatório sobre gatos com parâmetro ‘max_length’ com valor inteiro \r",
+									"Dado que o usuário tenha acesso à API\r",
+									"E tenha o endpoint https://catfact.ninja/facts\r",
+									"Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado\r",
+									"E adicionar o parâmetro 'max_length'\r",
+									"E inserir um value = 150\r",
+									"Então a requisição será enviada com sucesso\r",
+									"E o código de status da resposta será 200 - OK\r",
+									"E o sistema retornará uma resposta no formato JSON contendo a estrutura de dados do tipo ‘fact’ com uma string de tamanho menor ou igual a 150\r",
+									"E o campo ‘length’ terá um valor numérico menor ou igual a 150.\r",
+									"*/\r",
+									"\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status é 200 - OK\r",
+									"pm.test(\"1 - Código de status é 200\", function () {\r",
+									"    pm.response.to.have.status(200); // Valida que o código de status retornado é 200\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// 2. Verificar que o campo 'data' existe e contém uma lista de fatos\r",
+									"pm.test(\"2 - O campo 'data' deve existir e conter uma lista de fatos\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(jsonData, \"O campo 'data' está ausente\").to.have.property(\"data\");\r",
+									"    pm.expect(jsonData.data, \"O campo 'data' não contém uma lista\").to.be.an(\"array\").that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"// 3. Verificar que cada item na lista contém os campos 'fact' e 'length'\r",
+									"pm.test(\"3 - Cada item em 'data' deve conter 'fact' e 'length'\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    jsonData.data.forEach(item => {\r",
+									"        pm.expect(item, \"O item em 'data' não é um objeto\").to.be.an(\"object\");\r",
+									"        pm.expect(item, \"O campo 'fact' está ausente\").to.have.property(\"fact\");\r",
+									"        pm.expect(item.fact, \"O campo 'fact' não é uma string\").to.be.a(\"string\");\r",
+									"        pm.expect(item.fact.length, \"O tamanho do 'fact' excede 150 caracteres\").to.be.at.most(150);\r",
+									"\r",
+									"        pm.expect(item, \"O campo 'length' está ausente\").to.have.property(\"length\");\r",
+									"        pm.expect(item.length, \"O valor de 'length' excede 150\").to.be.at.most(150);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// 4. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"4 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// 5. O parâmetro 'max_length' foi respeitado e todos os fatos têm tamanho <= ao valor inserido\r",
+									"pm.test(\"5. O parâmetro 'max_length' foi respeitado e todos os fatos têm tamanho <= ao valor inserido\", function () {\r",
+									"    const queryParams = pm.request.url.query; // Obtém os parâmetros da URL\r",
+									"    const maxLength = Number(queryParams.get(\"max_length\")); // Recupera o valor do parâmetro 'max_length'\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"\r",
+									"    // Valida que o campo 'data' existe e contém fatos\r",
+									"    pm.expect(jsonData, \"O campo 'data' está ausente\").to.have.property(\"data\");\r",
+									"    pm.expect(jsonData.data, \"O campo 'data' não contém uma lista\").to.be.an(\"array\").that.is.not.empty;\r",
+									"\r",
+									"    // Valida que todos os fatos na lista respeitam o parâmetro 'max_length'\r",
+									"    jsonData.data.forEach(item => {\r",
+									"        pm.expect(item, \"O item em 'data' não é um objeto válido\").to.be.an(\"object\");\r",
+									"        pm.expect(item, \"O campo 'fact' está ausente\").to.have.property(\"fact\");\r",
+									"        pm.expect(item.fact.length, `O fato excede o valor de 'max_length' (${maxLength})`).to.be.at.most(maxLength);\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/facts?max_length=150",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"facts"
+							],
+							"query": [
+								{
+									"key": "max_length",
+									"value": "150",
+									"description": "maximum length of returned fact"
+								}
+							]
+						},
+						"description": "Returns a a list of facts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a list of facts_CT04 - Obter um fato aleatório sobre gatos com parâmetro ‘max_length’ com valor do tipo string",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT04 - Obter um fato aleatório sobre gatos com parâmetro ‘max_length’ com valor do tipo string\r",
+									"Dado que o usuário tenha acesso à API\r",
+									"E tenha o endpoint https://catfact.ninja/facts\r",
+									"Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado\r",
+									"E adicionar o parâmetro 'max_length'\r",
+									"E inserir um value = \"texto\"\r",
+									"Então a requisição será enviada com sucesso\r",
+									"E o sistema listará uma resposta no formato JSON contendo a estrutura de dados do tipo ‘data’ como vazio\r",
+									"E o código de status da resposta será 200 - OK.\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status é 200 - Ok    \r",
+									"pm.test(\"1 - Código de status é 200\", function () {\r",
+									"    pm.response.to.have.status(200); // Valida que o código de status retornado é 200\r",
+									"});\r",
+									"// 2. Verificar que o campo 'data' existe\r",
+									"pm.test(\"2 - O campo 'data' deve conter uma lista  vazia\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(jsonData, \"O campo 'data' existe\").to.have.property(\"data\");\r",
+									"    pm.expect(jsonData.data, \"O campo 'data'contém uma lista vazia\").to.be.an(\"array\").that.has.lengthOf(0);\r",
+									"});\r",
+									"\r",
+									"// 3. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"3 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/facts?max_length=DBR",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"facts"
+							],
+							"query": [
+								{
+									"key": "max_length",
+									"value": "DBR",
+									"description": "maximum length of returned fact"
+								}
+							]
+						},
+						"description": "Returns a a list of facts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a list of facts_CT05 - Obter múltiplos fatos aleatórios sobre gatos com parâmetro ‘limit’ com valor inteiro",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT05 - Obter múltiplos fatos aleatórios sobre gatos com parâmetro ‘limit’ com valor inteiro \r",
+									"Dado que o usuário tenha acesso à API\r",
+									"E tenha o endpoint https://catfact.ninja/facts\r",
+									"Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado\r",
+									"E adicionar o parâmetro 'limit'\r",
+									"E inserir um value = 3\r",
+									"Então a requisição será enviada com sucesso\r",
+									"E o código de status da resposta será 200 - OK\r",
+									"E o sistema retornará uma resposta no formato JSON contendo uma estrutura de dados do tipo ‘data’ com uma lista com 3 objetos\r",
+									"E cada fato dentro dessa lista conterá os campos ‘fact’ (string não vazia) e ‘length’ (número inteiro positivo)\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status é 200 - OK\r",
+									"pm.test(\"1 - Código de status é 200\", function () {\r",
+									"    pm.response.to.have.status(200); // Valida que o código de status retornado é 200\r",
+									"});\r",
+									"\r",
+									"// 2. Verificar que o campo 'data' existe e contém uma lista de fatos conforme o limite informado\r",
+									"pm.test('2 - Verificar se é permitido inserir um valor é um numero inteiro', function (){\r",
+									"    var limit = pm.request.url.query.get('limit');\r",
+									"    var parsedValue = parseInt(limit); // Converte para número inteiro\r",
+									"    pm.expect(parsedValue).to.be.an('Number');\r",
+									"    pm.expect(Number.isInteger(parsedValue), \"O valor não é um número inteiro\").to.be.true; \r",
+									"})\r",
+									"\r",
+									"// 3. Verificar que cada objeto em 'data' contém os campos 'fact' e 'length'\r",
+									"pm.test(\"3 - Cada fato em 'data' deve conter 'fact' e 'length'\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    jsonData.data.forEach(item => {\r",
+									"        pm.expect(item, \"O objeto em 'data' não é válido\").to.be.an(\"object\");\r",
+									"        pm.expect(item, \"O campo 'fact' existe\").to.have.property(\"fact\");\r",
+									"        pm.expect(item.fact, \"O campo 'fact' não é uma string ou está vazio\").to.be.a(\"string\").that.is.not.empty;\r",
+									"\r",
+									"        pm.expect(item, \"O campo 'length' existe\").to.have.property(\"length\");\r",
+									"        pm.expect(item.length, \"O campo 'length' é um número inteiro\").to.be.a(\"number\").that.is.above(0);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// 4. Validar se a quantidade de limite retornada corresponde ao valor informado'\r",
+									"pm.test(\"4 - A quantidade de limite retornada corresponde ao valor informado'\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    var limit = pm.request.url.query.get('limit');\r",
+									"    var parsedValue = parseInt(limit); // Converte para número inteiro\r",
+									"pm.expect(jsonData.data.length, \"O número de fatos retornados corresponde ao valor informado\").to.equal(parsedValue); // Valida que o número de fatos é igual ao valor de limite informado\r",
+									"\r",
+									"});\r",
+									"\r",
+									"// 5. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"5 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/facts?limit=12",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"facts"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "12",
+									"description": "limit the amount of results returned"
+								}
+							]
+						},
+						"description": "Returns a a list of facts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a list of facts _CT06-  Obter múltiplos fatos aleatórios sobre gatos com parâmetro ‘limit’ com valor zero",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT06-  Obter múltiplos fatos aleatórios sobre gatos com parâmetro ‘limit’ com valor zero\r",
+									"Dado que o usuário tenha acesso à API\r",
+									"E tenha o endpoint https://catfact.ninja/facts\r",
+									"Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado\r",
+									"E adicionar o parâmetro 'limit'\r",
+									"E inserir um value = 0\r",
+									"Então a requisição será enviada com sucesso\r",
+									"E o código de status da resposta será 200 - OK\r",
+									"E o sistema retornará uma resposta no formato JSON contendo uma estrutura de dados do tipo ‘data’ retornará uma lista vazia.\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status é 200 - OK\r",
+									"pm.test(\"1 - Código de status é 200\", function () {\r",
+									"    pm.response.to.have.status(200); // Valida que o código de status retornado é 200\r",
+									"});\r",
+									"\r",
+									"// 2. Verificar que o campo 'data' existe e é uma lista vazia\r",
+									"pm.test(\"2 - O campo 'data' deve existir e ser uma lista vazia\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"        var listSize = jsonData.data.length; // O tamanho do retorno da lista\r",
+									"    pm.expect(0).equals(listSize); // A lista é igual a zero\r",
+									"    });\r",
+									"\r",
+									"// 3. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"3 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// 4. Validar se a quantidade de limite retornada corresponde ao valor informado'\r",
+									"pm.test(\"4 - A quantidade de limite retornada corresponde ao valor informado'\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    var limit = pm.request.url.query.get('limit');\r",
+									"    var parsedValue = parseInt(limit); // Converte para número inteiro\r",
+									"pm.expect(jsonData.data.length, \"O número de fatos retornados corresponde ao valor informado\").to.equal(parsedValue); // Valida que o número de fatos é igual ao valor de limite informado\r",
+									"\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/facts?limit=0",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"facts"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "0",
+									"description": "limit the amount of results returned"
+								}
+							]
+						},
+						"description": "Returns a a list of facts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a list of facts_CT07 - Obter múltiplos fatos aleatórios sobre gatos com parâmetro ‘limit’ com valor negativo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT07 - Obter múltiplos fatos aleatórios sobre gatos com parâmetro ‘limit’ com valor negativo\r",
+									"Dado que o usuário tenha acesso à API\r",
+									"E tenha o endpoint https://catfact.ninja/facts\r",
+									"Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado\r",
+									"E adicionar o parâmetro 'limit'\r",
+									"E inserir um value = -2\r",
+									"Então a requisição será enviada com sucesso\r",
+									"E o código de status da resposta será 200 - OK\r",
+									"E o sistema retornará uma resposta no formato JSON contendo uma estrutura de dados do tipo ‘data’ retornará uma lista vazia.\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status é 200 - OK\r",
+									"pm.test(\"1 - Código de status é 200\", function () {\r",
+									"    pm.response.to.have.status(200); // Valida que o código de status retornado é 200\r",
+									"});\r",
+									"\r",
+									"// 2. Verificar que o campo 'data' existe e é uma lista vazia\r",
+									"pm.test(\"2 - O campo 'data' deve existir e ser uma lista vazia\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"        var listSize = jsonData.data.length; // O tamanho do retorno da lista\r",
+									"    pm.expect(0).equals(listSize); // A lista é igual a zero\r",
+									"    });\r",
+									"    \r",
+									"// 3. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"3 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// 4. Validar se a quantidade de limite retornada corresponde ao valor informado'\r",
+									"pm.test(\"4 - A quantidade de limite retornada corresponde ao valor informado'\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    var limit = pm.request.url.query.get('limit');\r",
+									"    var parsedValue = parseInt(limit); // Converte para número inteiro\r",
+									"pm.expect(jsonData.data.length, \"O número de fatos retornados corresponde ao valor informado\").to.equal(parsedValue); // Valida que o número de fatos é igual ao valor de limite informado\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/facts?limit=-2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"facts"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "-2",
+									"description": "limit the amount of results returned"
+								}
+							]
+						},
+						"description": "Returns a a list of facts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a list of facts_CT08 - Obter múltiplos fatos aleatórios sobre gatos com parâmetro ‘limit’ com valor do tipo string",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT08 - Obter múltiplos fatos aleatórios sobre gatos com parâmetro ‘limit’ com valor do tipo string\r",
+									"Dado que o usuário tenha acesso à API\r",
+									"E tenha o endpoint https://catfact.ninja/facts\r",
+									"Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado\r",
+									"E adicionar o parâmetro 'limit'\r",
+									"E inserir um value = \"DBR\"\r",
+									"Então a requisição será enviada com sucesso\r",
+									"E o código de status da resposta será 200 - OK\r",
+									"E o sistema retornará uma resposta no formato JSON contendo uma estrutura de dados do tipo ‘data’ retornará uma lista vazia.\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status é 200- - Ok\r",
+									"pm.test(\"1 - Código de status é 200\", function () {\r",
+									"    pm.response.to.have.status(200); // Valida que o código de status retornado é 200\r",
+									"});\r",
+									"\r",
+									"// 2. Verificar que o campo 'data' existe e é uma lista vazia\r",
+									"pm.test(\"2 - O campo 'data' deve existir e ser uma lista vazia\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"        var listSize = jsonData.data.length; // O tamanho do retorno da lista\r",
+									"    pm.expect(0).equals(listSize); // A lista é igual a zero\r",
+									"    });\r",
+									"    \r",
+									"// 3. Validar se a quantidade de limite retornada corresponde ao valor informado'\r",
+									"pm.test(\"3 - A quantidade de limite retornada corresponde ao valor informado'\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    var limit = pm.request.url.query.get('limit');\r",
+									"    var parsedValue = parseInt(limit); // Converte para número inteiro\r",
+									"pm.expect(jsonData.data.length, \"O número de fatos retornados corresponde ao valor informado\").to.equal(parsedValue); // Valida que o número de fatos é igual ao valor de limite informado\r",
+									"\r",
+									"});\r",
+									"\r",
+									"// 4. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"4 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"    \r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/facts?limit=DBR",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"facts"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "DBR",
+									"description": "limit the amount of results returned"
+								}
+							]
+						},
+						"description": "Returns a a list of facts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a list of facts_CT09 -  Obter um fato aleatório sobre gatos com parâmetro ‘max_length’ vazio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT09 -  Obter um fato aleatório sobre gatos com parâmetro ‘max_length’ vazio\r",
+									"Dado que o usuário tenha acesso à API\r",
+									"E tenha o endpoint https://catfact.ninja/facts\r",
+									"Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado\r",
+									"E adicionar o parâmetro 'max_length'\r",
+									"E inserir um value = \"\" (string vazia)\r",
+									"Então a requisição será enviada com sucesso\r",
+									"E o código de status da resposta será 200 - OK\r",
+									"E o sistema retornará uma resposta no formato JSON contendo a estrutura de dados do tipo ‘fact’ com uma string de tamanho qualquer\r",
+									"E o campo ‘length’ terá um valor numérico correspondente ao tamanho do fato retornado.\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status é 200 - OK\r",
+									"pm.test(\"1 - O código de status deve ser 200 - OK\", function () {\r",
+									"pm.response.to.have.status(200); // Valida que o código de status retornado é 200                               \r",
+									"});\r",
+									"\r",
+									"// 2. Verificar que o campo 'data' existe e é uma lista vazia\r",
+									"pm.test(\"2 - O campo 'data' deve existir e ser uma lista vazia\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"        var listSize = jsonData.data.length; // O tamanho do retorno da lista\r",
+									"    pm.expect(0).equals(listSize); // A lista é igual a zero\r",
+									"    });\r",
+									"\r",
+									"\r",
+									"// 3. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"3 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/facts?max_length=",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"facts"
+							],
+							"query": [
+								{
+									"key": "max_length",
+									"value": "",
+									"description": "maximum length of returned fact"
+								}
+							]
+						},
+						"description": "Returns a a list of facts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a list of facts_CT10 -  Obter múltiplos fatos aleatórios sobre gatos com parâmetro ‘limit’ vazio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT10: Obter múltiplos fatos aleatórios sobre gatos com parâmetro ‘limit’ vazio \r",
+									"Dado que o usuário tenha acesso à API \r",
+									"E tenha o endpoint https://catfact.ninja/facts\r",
+									"Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado \r",
+									"E adicionar o parâmetro 'limit' E inserir um value = \"\" (string vazia) \r",
+									"Então a requisição será enviada com sucesso \r",
+									"E o código de status da resposta será 200 - OK \r",
+									"E o sistema retornará uma resposta no formato JSON contendo uma estrutura de dados do tipo ‘data’ uma lista com a quantidade padrão de resultados (se houver um padrão definido pela API) \r",
+									"E contendo a estrutura de dados do tipo ‘data’ terá os campos ‘fact’ (string não vazia) e ‘length’ (número inteiro positivo).\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status é 200 - OK\r",
+									"pm.test(\"1 - O código de status deve ser 200 - OK\", function () {\r",
+									"pm.response.to.have.status(200); // Valida que o código de status retornado é 200                               \r",
+									"});\r",
+									"\r",
+									"// 2. Verificar que o campo 'data' existe e é uma lista vazia\r",
+									"pm.test(\"2 - O campo 'data' deve existir e ser uma lista vazia\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"        var listSize = jsonData.data.length; // O tamanho do retorno da lista\r",
+									"    pm.expect(0).equals(listSize); // A lista é igual a zero\r",
+									"    });\r",
+									"\r",
+									"\r",
+									"// 3. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"3 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// 4. Validar se a quantidade de limite retornada corresponde ao valor informado'\r",
+									"pm.test(\"4 - A quantidade de limite retornada corresponde ao valor informado'\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    var limit = pm.request.url.query.get('limit');\r",
+									"    var parsedValue = parseInt(limit); // Converte para número inteiro\r",
+									"pm.expect(jsonData.data.length, \"O número de fatos retornados corresponde ao valor informado\").to.equal(parsedValue); // Valida que o número de fatos é igual ao valor de limite informado\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/facts?limit=",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"facts"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": ""
+								}
+							]
+						},
+						"description": "Returns a a list of facts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a list of facts_CT11 - Obter fatos aleatórios com max_length inteiro e limit inteiro",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT11 - Obter fatos aleatórios com max_length inteiro e limit inteiro\r",
+									"Dado que: O usuário tem acesso à API e ao endpoint https://catfact.ninja/facts\r",
+									"Quando: O usuário realiza uma requisição HTTP GET para o endpoint, e adiciona os parâmetros max_length = 100 e limit = 5\r",
+									"Então a requisição é enviada com sucesso.\r",
+									"E o código de status da resposta é 200 - OK.\r",
+									"E o sistema retorna uma resposta no formato JSON contendo uma lista de 5 fatos.\r",
+									"E cada fato na lista tem no máximo 100 caracteres no campo fact.\r",
+									"E cada fato na lista tem um valor de length menor ou igual a 100.\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status é 200 - OK\r",
+									"pm.test(\"1 - O código de status deve ser 200 - OK\", function () {\r",
+									"pm.response.to.have.status(200); // Verifica se o código de status é 200\r",
+									"});\r",
+									"\r",
+									"// 2. Verificar que o campo 'data' existe e contém uma lista de fatos\r",
+									"pm.test(\"2 - O campo 'data' deve existir e conter uma lista de fatos\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(jsonData, \"O campo 'data' está ausente\").to.have.property(\"data\");\r",
+									"    pm.expect(jsonData.data, \"O campo 'data' não contém uma lista\").to.be.an(\"array\").that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"// 3. Validar que cada fato possui a descrição menor ou igual ao valor informado'\r",
+									"pm.test(\"3 - Cada fato possui a descrição menor ou igual ao valor informado'\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    var maxLength = pm.request.url.query.get('max_length');\r",
+									"    var parsedValue = parseInt(maxLength); // Converte para número inteiro\r",
+									"    jsonData.data.forEach(item => {\r",
+									"        pm.expect(item, \"O campo 'fact' existe\").to.have.property(\"fact\");\r",
+									"        pm.expect(item.fact, \"O campo 'fact' não é uma string ou está vazio\").to.be.a(\"string\").that.is.not.empty;\r",
+									"        pm.expect(item.fact.length, \"O tamanho do 'fact' excede ao valor informado\").to.be.at.most(parsedValue); // Valida que o tamanho é menor ou igual a 100\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// 4. Verificar que o campo 'length' reflete o tamanho do campo 'fact'\r",
+									"pm.test(\"4 - O campo 'length' deve refletir o tamanho do campo 'fact'\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    jsonData.data.forEach(item => {\r",
+									"        pm.expect(item, \"O objeto em 'data' não é válido\").to.be.an(\"object\");\r",
+									"        pm.expect(item, \"O campo 'length' está ausente\").to.have.property(\"length\");\r",
+									"        pm.expect(item.length, \"O valor de 'length' não corresponde ao tamanho do 'fact'\")\r",
+									"            .to.equal(item.fact.length); // Valida que 'length' corresponde ao tamanho de 'fact'\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// 5. Validar se a quantidade de limite retornada corresponde ao valor informado'\r",
+									"pm.test(\"5 - A quantidade de limite retornada corresponde ao valor informado'\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    var limit = pm.request.url.query.get('limit');\r",
+									"    var parsedValue = parseInt(limit); // Converte para número inteiro\r",
+									"pm.expect(jsonData.data.length, \"O número de fatos retornados corresponde ao valor informado\").to.equal(parsedValue); // Valida que o número de fatos é igual ao valor de limite informado\r",
+									"});\r",
+									"\r",
+									"// 6. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"6 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/facts?max_length=100&limit=5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"facts"
+							],
+							"query": [
+								{
+									"key": "max_length",
+									"value": "100",
+									"description": "maximum length of returned fact"
+								},
+								{
+									"key": "limit",
+									"value": "5",
+									"description": "limit the amount of results returned"
+								}
+							]
+						},
+						"description": "Returns a a list of facts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a list of facts_CT12 - Obter fatos com max_length negativo e limit inteiro",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT12 - Obter fatos com max_length negativo e limit inteiro\r",
+									"Dado que: O usuário tem acesso à API e ao endpoint https://catfact.ninja/facts\r",
+									"Quando: O usuário realiza uma requisição HTTP GET para o endpoint, e adiciona os parâmetros max_length = -10 e limit = 5\r",
+									"Então a requisição será enviada com sucesso\r",
+									"E o código de status da resposta será 200 - OK\r",
+									"E o sistema retornará uma resposta no formato JSON contendo uma estrutura de dados do tipo ‘data’ retornará uma lista vazia.\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status é 200 - OK\r",
+									"pm.test(\"1 - O código de status deve ser 200 - OK\", function () {\r",
+									"pm.response.to.have.status(200); // Verifica se o código de status é 200\r",
+									"});\r",
+									"\r",
+									"// 2. Verificar que o campo 'data' existe e é uma lista vazia\r",
+									"pm.test(\"2 - O campo 'data' deve existir e ser uma lista vazia\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"        var listSize = jsonData.data.length; // O tamanho do retorno da lista\r",
+									"    pm.expect(0).equals(listSize); // A lista é igual a zero\r",
+									"    });\r",
+									"\r",
+									"// 3. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"3 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// 4. Verificar a quantidade por página está igual ao informado\r",
+									"pm.test(\"4 - Verificar a quantidade por página está igual ao informado\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    var limit = pm.request.url.query.get('limit');\r",
+									"    var parsedValue = parseInt(limit); // Converte para número inteiro\r",
+									"    pm.expect(parsedValue).to.equal(jsonData.per_page); // Verifica a quantidade páginas exibida.\r",
+									"    });\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/facts?max_length=-10&limit=5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"facts"
+							],
+							"query": [
+								{
+									"key": "max_length",
+									"value": "-10",
+									"description": "maximum length of returned fact"
+								},
+								{
+									"key": "limit",
+									"value": "5",
+									"description": "limit the amount of results returned"
+								}
+							]
+						},
+						"description": "Returns a a list of facts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a list of facts_CT13 - Obter fatos com max_length inteiro e limit negativo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/* \r",
+									"CT13 - Obter fatos com max_length inteiro e limit negativo\r",
+									"Dado que: O usuário tem acesso à API e ao endpoint https://catfact.ninja/facts\r",
+									"Quando: O usuário realiza uma requisição HTTP GET para o endpoint, e adiciona os parâmetros max_length = 100 e limit = -5\r",
+									"Então a requisição será enviada com sucesso\r",
+									"E o código de status da resposta será 200 - OK\r",
+									"E o sistema retornará uma resposta no formato JSON contendo a estrutura de dados do tipo ‘fact’ com uma string de tamanho qualquer\r",
+									"E o campo ‘length’ terá um valor numérico correspondente ao tamanho do fato retornado.\r",
+									"E o limite de fatos retornados será o valor padrão (10)\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status é 200 - OK\r",
+									"pm.test(\"1 - O código de status deve ser 200 - OK\", function () {\r",
+									"pm.response.to.have.status(200); // Verifica se o código de status é 200\r",
+									"});\r",
+									"\r",
+									"// 2. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"2 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// 3. Verificar que o campo 'data' existe e contém uma lista de fatos\r",
+									"pm.test(\"3 - O campo 'data' deve existir e conter uma lista de fatos\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(jsonData, \"O campo 'data' existe\").to.have.property(\"data\");\r",
+									"    pm.expect(jsonData.data, \"O campo 'data' contém uma lista\").to.be.an(\"array\").that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"// 4. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"4 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// 5. Verificar a quantidade por página está retorno padrão de 10 páginas,diferente do informado.\r",
+									"pm.test(\"5 - Verificar a quantidade por página está retorno padrão de 10 páginas,diferente do informado\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(10).to.equal(jsonData.per_page); // Verifica a quantidade páginas exibida.\r",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/facts?max_length=100&limit=-5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"facts"
+							],
+							"query": [
+								{
+									"key": "max_length",
+									"value": "100",
+									"description": "maximum length of returned fact"
+								},
+								{
+									"key": "limit",
+									"value": "-5",
+									"description": "limit the amount of results returned"
+								}
+							]
+						},
+						"description": "Returns a a list of facts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a list of facts_CT14 - Obter fatos com max_length negativo e limit negativo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT14 - Obter fatos com max_length negativo e limit negativo\r",
+									"Dado que: O usuário tem acesso à API e ao endpoint https://catfact.ninja/facts\r",
+									"Quando: O usuário realiza uma requisição HTTP GET para o endpoint, e adiciona os parâmetros max_length = -10 e limit = -5\r",
+									"Então a requisição será enviada com sucesso\r",
+									"E o código de status da resposta será 200 - OK\r",
+									"E o sistema retornará uma resposta no formato JSON contendo uma estrutura de dados do tipo ‘data’ retornará uma lista vazia.\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status é 200 - OK\r",
+									"pm.test(\"1 - O código de status deve ser 200 - OK\", function () {\r",
+									"pm.response.to.have.status(200); // Verifica se o código de status é 200\r",
+									"});\r",
+									"\r",
+									"// 2. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"2 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// 3. Verificar que o campo 'data' existe e é uma lista vazia\r",
+									"pm.test(\"3 - O campo 'data' deve existir e ser uma lista vazia\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"        var listSize = jsonData.data.length; // O tamanho do retorno da lista\r",
+									"    pm.expect(0).equals(listSize); // A lista é igual a zero\r",
+									"    });\r",
+									"\r",
+									"// 4. Verificar a quantidade por página está retorno padrão de 10 páginas,diferente do informado.\r",
+									"pm.test(\"4 - Verificar a quantidade por página está retorno padrão de 10 páginas,diferente do informado\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(10).to.equal(jsonData.per_page); // Verifica a quantidade páginas exibida.\r",
+									"    });\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/facts?max_length=-10&limit=-5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"facts"
+							],
+							"query": [
+								{
+									"key": "max_length",
+									"value": "-10",
+									"description": "maximum length of returned fact"
+								},
+								{
+									"key": "limit",
+									"value": "-5",
+									"description": "limit the amount of results returned"
+								}
+							]
+						},
+						"description": "Returns a a list of facts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a list of facts_CT15 - Obter fatos com max_length inteiro e limit vazio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT15 - Obter fatos com max_length inteiro e limit vazio\r",
+									"Dado que: O usuário tem acesso à API e ao endpoint https://catfact.ninja/facts\r",
+									"Quando: O usuário realiza uma requisição HTTP GET para o endpoint, e adiciona os parâmetros max_length = 100 e limit = \"\"\r",
+									"Então:\r",
+									"A requisição é enviada com sucesso.\r",
+									"O código de status da resposta é 200 - OK.\r",
+									"O sistema retorna uma resposta no formato JSON contendo uma lista de fatos (a quantidade padrão de resultados da API).\r",
+									"Cada fato na lista tem no máximo 100 caracteres no campo fact.\r",
+									"Cada fato na lista tem um valor de length menor ou igual a 100.\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status é 200 - OK\r",
+									"pm.test(\"1 - O código de status deve ser 200 - OK\", function () {\r",
+									"pm.response.to.have.status(200); // Verifica se o código de status é 200\r",
+									"});\r",
+									"\r",
+									"// 2. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"2 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// 3. Verificar que o campo 'data' existe e contém uma lista de fatos\r",
+									"pm.test(\"3 - O campo 'data' deve existir e conter uma lista de fatos\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(jsonData, \"O campo 'data' existe\").to.have.property(\"data\");\r",
+									"    pm.expect(jsonData.data, \"O campo 'data' contém uma lista\").to.be.an(\"array\").that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"// 4. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"4 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// 5. Verificar a quantidade por página está retorno padrão de 10 páginas,diferente do informado.\r",
+									"pm.test(\"5 - Verificar a quantidade por página está retorno padrão de 10 páginas,diferente do informado\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(10).to.equal(jsonData.per_page); // Verifica a quantidade páginas exibida.\r",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/facts?max_length=100&limit=",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"facts"
+							],
+							"query": [
+								{
+									"key": "max_length",
+									"value": "100",
+									"description": "maximum length of returned fact"
+								},
+								{
+									"key": "limit",
+									"value": "",
+									"description": "limit the amount of results returned"
+								}
+							]
+						},
+						"description": "Returns a a list of facts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a list of facts_CT16 - Obter fatos com max_length vazio e limit inteiro",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*CT16 - Obter fatos com max_length vazio e limit inteiro\r",
+									"Dado que: O usuário tem acesso à API e ao endpoint https://catfact.ninja/facts\r",
+									"Quando: O usuário realiza uma requisição HTTP GET para o endpoint, e adiciona os parâmetros max_length = \"\" e limit = 5\r",
+									"Então:\r",
+									"A requisição é enviada com sucesso.\r",
+									"O código de status da resposta é 200 - OK.\r",
+									"O sistema retorna uma resposta no formato JSON contendo uma lista de 5 fatos.\r",
+									"Os fatos na lista podem ter qualquer tamanho.\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status é 200 - OK\r",
+									"pm.test(\"1 - O código de status deve ser 200 - OK\", function () {\r",
+									"pm.response.to.have.status(200); // Verifica se o código de status é 200\r",
+									"});\r",
+									"\r",
+									"// 2. Verificar que o campo 'data' existe e contém fatos conforme o valor informado\r",
+									"pm.test(\"2 - O campo 'data' deve existir e conter conforme o valor informado\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    var limit = pm.request.url.query.get('limit');\r",
+									"    var parsedValue = parseInt(limit); // Converte para número inteiro\r",
+									"    pm.expect(jsonData.data, \"O campo 'data' contém uma lista válida\").to.be.an(\"array\").that.has.lengthOf(parsedValue); // Valida de acordo com o valor informado\r",
+									"});\r",
+									"\r",
+									"// 3. Cada fato deve conter os campos fact e length\r",
+									"pm.test(\"3 - Cada fato deve conter os campos 'fact' e 'length'\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    let inconsistencias = []; // Lista para inconsistências\r",
+									"\r",
+									"    jsonData.data.forEach((item, index) => {\r",
+									"        // Validar se o item é um objeto\r",
+									"        pm.expect(item, `O item na posição ${index} não é um objeto`).to.be.an(\"object\");\r",
+									"\r",
+									"        // Verificar existência e validade do campo 'fact'\r",
+									"        if (!item.fact || typeof item.fact !== \"string\") {\r",
+									"            inconsistencias.push({\r",
+									"                index: index,\r",
+									"                mensagem: \"O campo 'fact' não é uma string válida ou está ausente.\",\r",
+									"                dado: item\r",
+									"            });\r",
+									"        }\r",
+									"\r",
+									"        // Verificar existência e validade do campo 'length'\r",
+									"        if (!item.length || typeof item.length !== \"number\") {\r",
+									"            inconsistencias.push({\r",
+									"                index: index,\r",
+									"                mensagem: \"O campo 'length' não é um número válido ou está ausente.\",\r",
+									"                dado: item\r",
+									"            });\r",
+									"        }\r",
+									"    });\r",
+									"\r",
+									"    // Logar inconsistências, se houver\r",
+									"    if (inconsistencias.length > 0) {\r",
+									"        console.log(\"Inconsistências detectadas:\", inconsistencias);\r",
+									"    }\r",
+									"\r",
+									"    // O teste falhará se houver inconsistências\r",
+									"    pm.expect(inconsistencias, \"Foram detectados erros nos campos 'fact' ou 'length' em alguns itens. Ver detalhes no console.\").to.be.empty;\r",
+									"});\r",
+									"\r",
+									"// 4. Verificar que a quantidade de itens corresponde ao valor do 'limit'\r",
+									"pm.test(\"4 - Verificar que a quantidade de itens corresponde ao valor do 'limit\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    var limit = pm.request.url.query.get('limit');\r",
+									"    var parsedValue = parseInt(limit); // Converte para número inteiro\r",
+									"    pm.expect(parsedValue, \"O número de itens em 'data' não corresponde ao limite \").to.equals(jsonData.per_page);\r",
+									"});\r",
+									"\r",
+									"// 5. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"5 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/facts?max_length=&limit=5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"facts"
+							],
+							"query": [
+								{
+									"key": "max_length",
+									"value": "",
+									"description": "maximum length of returned fact"
+								},
+								{
+									"key": "limit",
+									"value": "5",
+									"description": "limit the amount of results returned"
+								}
+							]
+						},
+						"description": "Returns a a list of facts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a list of facts_CT17 - Obter fatos com max_length vazio e limit vazio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT17 - Obter fatos com max_length vazio e limit vazio\r",
+									"Dado que: O usuário tem acesso à API e ao endpoint https://catfact.ninja/facts\r",
+									"Quando: O usuário realiza uma requisição HTTP GET para o endpoint, e adiciona os parâmetros max_length = \"\" e limit = \"\"\r",
+									"Então:\r",
+									"A requisição é enviada com sucesso.\r",
+									"O código de status da resposta é 200 - OK.\r",
+									"O sistema retorna uma resposta no formato JSON contendo uma lista de fatos (a quantidade padrão de resultados da API).\r",
+									"Os fatos na lista podem ter qualquer tamanho.\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status é 200 - OK\r",
+									"pm.test(\"1 - O código de status deve ser 200 - OK\", function () {\r",
+									"pm.response.to.have.status(200); // Verifica se o código de status é 200\r",
+									"});\r",
+									"\r",
+									"// 2. Verificar que o campo 'data' existe e contém uma lista de fatos\r",
+									"pm.test(\"2 - O campo 'data' deve existir e conter uma lista de fatos\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(jsonData, \"O campo 'data' existe\").to.have.property(\"data\");\r",
+									"    pm.expect(jsonData.data, \"O campo 'data' contém uma lista\").to.be.an(\"array\").that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"// 3. Cada fato deve conter os campos fact e length\r",
+									"pm.test(\"3 - Cada fato deve conter os campos 'fact' e 'length'\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    let inconsistencias = []; // Lista para inconsistências\r",
+									"\r",
+									"    jsonData.data.forEach((item, index) => {\r",
+									"        // Validar se o item é um objeto\r",
+									"        pm.expect(item, `O item na posição ${index} não é um objeto`).to.be.an(\"object\");\r",
+									"\r",
+									"        // Verificar existência e validade do campo 'fact'\r",
+									"        if (!item.fact || typeof item.fact !== \"string\") {\r",
+									"            inconsistencias.push({\r",
+									"                index: index,\r",
+									"                mensagem: \"O campo 'fact' não é uma string válida ou está ausente.\",\r",
+									"                dado: item\r",
+									"            });\r",
+									"        }\r",
+									"\r",
+									"        // Verificar existência e validade do campo 'length'\r",
+									"        if (!item.length || typeof item.length !== \"number\") {\r",
+									"            inconsistencias.push({\r",
+									"                index: index,\r",
+									"                mensagem: \"O campo 'length' não é um número válido ou está ausente.\",\r",
+									"                dado: item\r",
+									"            });\r",
+									"        }\r",
+									"    });\r",
+									"\r",
+									"    // Logar inconsistências, se houver\r",
+									"    if (inconsistencias.length > 0) {\r",
+									"        console.log(\"Inconsistências detectadas:\", inconsistencias);\r",
+									"    }\r",
+									"\r",
+									"    // O teste falhará se houver inconsistências\r",
+									"    pm.expect(inconsistencias, \"Foram detectados erros nos campos 'fact' ou 'length' em alguns itens. Ver detalhes no console.\").to.be.empty;\r",
+									"});\r",
+									"\r",
+									"// 4. Verificar a quantidade por página está retorno padrão de 10 páginas,diferente do informado.\r",
+									"pm.test(\"4 - Verificar a quantidade por página está retorno padrão de 10 páginas,diferente do informado\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(10).to.equal(jsonData.per_page); // Verifica a quantidade páginas exibida.\r",
+									"    });\r",
+									"\r",
+									"// 5. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"5 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/facts?max_length=&limit=",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"facts"
+							],
+							"query": [
+								{
+									"key": "max_length",
+									"value": "",
+									"description": "maximum length of returned fact"
+								},
+								{
+									"key": "limit",
+									"value": "",
+									"description": "limit the amount of results returned"
+								}
+							]
+						},
+						"description": "Returns a a list of facts"
+					},
+					"response": []
+				}
+			],
+			"description": "# **Facts**\n\n**Busca por lista de fatos de gatos de forma aleatórias** \n\n| **Requisição** |\n| **URL** | **Autenticação por Requisição:** [<b>https://catfact.ninja/fact</b>](https://catfact.ninja/fact)**s** |\n| **Método** | **GET** |\n\n| **Params** |\n| **Name** | **Type** | **Value** | **Description** | **Obrigatório** |\n| **Params** | **''max_length'** | **Do tipo inteiro** | **Duração máxima do fato retornado** | **Não** |\n| **‘limit’** | **Do tipo inteiro** | **Limitar a quantidade de resultados retornados** | **Não** |\n\n## **Cenário de teste**\n\n##### **CT01 - Obter um fato aleatório sobre gatos com parâmetro ‘max_length’ com valor negativo**\n\n- **Dado que o usuário tenha acesso à API**\n    \n    - **E tenha o endpoint https://catfact.ninja/facts**\n        \n- **Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado**\n    \n    - **E adicionar o parâmetro 'max_length'**\n        \n    - **E inserir um value = -5**\n        \n- **Então a requisição será enviada com sucesso**\n    \n    - **E o código de status da resposta será  200 - OK**  \n        \n    - **E o sistema retornará uma resposta no formato JSON vazio.**\n        \n\n##### **CT02 - Obter um fato aleatório sobre gatos com parâmetro ‘max_length’ com valor zero**\n\n- **Dado que o usuário tenha acesso à API**\n    \n    - **E tenha o endpoint https://catfact.ninja/facts**\n        \n- **Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado**\n    \n    - **E adicionar o parâmetro 'max_length'**\n        \n    - **E inserir um value = 0**\n        \n- **Então a requisição será enviada com sucesso**\n    \n    - **E o código de status da resposta será 200 - OK**\n        \n    - **E o sistema retornará uma resposta no formato JSON contendo a estrutura de dados do tipo ‘fact’ com uma string vazia**\n        \n    - **E o campo ‘length’ terá o valor 0.**\n        \n\n##### **CT03 -  Obter um fato aleatório sobre gatos com parâmetro ‘max_length’ com valor inteiro** \n\n- **Dado que o usuário tenha acesso à API**\n    \n    - **E tenha o endpoint https://catfact.ninja/facts**\n        \n- **Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado**\n    \n    - **E adicionar o parâmetro 'max_length'**\n        \n    - **E inserir um value = 150**\n        \n- **Então a requisição será enviada com sucesso**\n    \n    - **E o código de status da resposta será 200 - OK**\n        \n    - **E o sistema retornará uma resposta no formato JSON contendo a estrutura de dados do tipo ‘fact’ com uma string de tamanho menor ou igual a 150**\n        \n    - **E o campo ‘length’ terá um valor numérico menor ou igual a 150.**\n        \n\n##### **CT04 - Obter um fato aleatório sobre gatos com parâmetro ‘max_length’ com valor do tipo string**\n\n- **Dado que o usuário tenha acesso à API**\n    \n    - **E tenha o endpoint https://catfact.ninja/facts**\n        \n- **Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado**\n    \n    - **E adicionar o parâmetro 'max_length'**\n        \n    - **E inserir um value = \"texto\"**\n        \n- **Então a requisição será enviada com sucesso**\n    \n    - **E o sistema listará uma resposta no formato JSON contendo a estrutura de dados do tipo ‘data’ como vazio**\n        \n    - **E o código de status da resposta será 200 - OK.**\n        \n\n##### **CT05 - Obter múltiplos fatos aleatórios sobre gatos com parâmetro ‘limit’ com valor inteiro** \n\n- **Dado que o usuário tenha acesso à API**\n    \n    - **E tenha o endpoint https://catfact.ninja/facts**\n        \n- **Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado**\n    \n    - **E adicionar o parâmetro 'limit'**\n        \n    - **E inserir um value = 3**\n        \n- **Então a requisição será enviada com sucesso**\n    \n    - **E o código de status da resposta será 200 - OK**\n        \n    - **E o sistema retornará uma resposta no formato JSON contendo uma estrutura de dados do tipo ‘data’ com uma lista com 3 objetos**\n        \n    - **E cada fato dentro dessa lista conterá os campos ‘fact’ (string não vazia) e ‘length’ (número inteiro positivo).**\n        \n\n##### **CT06-  Obter múltiplos fatos aleatórios sobre gatos com parâmetro ‘limit’ com valor zero**\n\n- **Dado que o usuário tenha acesso à API**\n    \n    - **E tenha o endpoint https://catfact.ninja/facts**\n        \n- **Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado**\n    \n    - **E adicionar o parâmetro 'limit'**\n        \n    - **E inserir um value = 0**\n        \n- **Então a requisição será enviada com sucesso**\n    \n    - **E o código de status da resposta será 200 - OK**\n        \n    - **E o sistema retornará uma resposta no formato JSON contendo uma estrutura de dados do tipo ‘data’ retornará uma lista vazia.**\n        \n\n##### **CT07 - Obter múltiplos fatos aleatórios sobre gatos com parâmetro ‘limit’ com valor negativo**\n\n- **Dado que o usuário tenha acesso à API**\n    \n    - **E tenha o endpoint https://catfact.ninja/facts**\n        \n- **Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado**\n    \n    - **E adicionar o parâmetro 'limit'**\n        \n    - **E inserir um value = -2**\n        \n- **Então a requisição será enviada com sucesso**\n    \n    - **E o código de status da resposta será 200 - OK**\n        \n    - **E o sistema retornará uma resposta no formato JSON contendo uma estrutura de dados do tipo ‘data’ retornará uma lista vazia.**\n        \n\n##### **CT08 - Obter múltiplos fatos aleatórios sobre gatos com parâmetro ‘limit’ com valor do tipo string**\n\n- **Dado que o usuário tenha acesso à API**\n    \n    - **E tenha o endpoint https://catfact.ninja/facts**\n        \n- **Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado**\n    \n    - **E adicionar o parâmetro 'limit'**\n        \n    - **E inserir um value = \"DBR\"**\n        \n- **Então a requisição será enviada com sucesso**\n    \n    - **E o código de status da resposta será 200 - OK**\n        \n    - **E o sistema retornará uma resposta no formato JSON contendo uma estrutura de dados do tipo ‘data’ retornará uma lista vazia.  \n        **\n        \n\n##### **CT09 -  Obter um fato aleatório sobre gatos com parâmetro ‘max_length’ vazio**\n\n- **Dado que o usuário tenha acesso à API**\n    \n    - **E tenha o endpoint https://catfact.ninja/facts**\n        \n- **Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado**\n    \n    - **E adicionar o parâmetro 'max_length'**\n        \n    - **E inserir um value = \"\" (string vazia)**\n        \n- **Então a requisição será enviada com sucesso**\n    \n    - **E o código de status da resposta será 200 - OK**\n        \n    - **E o sistema retornará uma resposta no formato JSON contendo a estrutura de dados do tipo ‘fact’ com uma string de tamanho qualquer**\n        \n    - **E o campo ‘length’ terá um valor numérico correspondente ao tamanho do fato retornado.**\n        \n\n##### **CT10: Obter múltiplos fatos aleatórios sobre gatos com parâmetro ‘limit’ vazio** \n\n- **Dado que o usuário tenha acesso à API** \n    \n    - **E tenha o endpoint https://catfact.ninja/facts**\n        \n- **Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado** \n    \n    - **E adicionar o parâmetro 'limit' E inserir um value = \"\" (string vazia)** \n        \n- **Então a requisição será enviada com sucesso** \n    \n    - **E o código de status da resposta será 200 - OK** \n        \n    - **E o sistema retornará uma resposta no formato JSON contendo uma estrutura de dados do tipo ‘data’ uma lista com a quantidade padrão de resultados (se houver um padrão definido pela API)** \n        \n    - **E contendo a estrutura de dados do tipo ‘data’ terá os campos ‘fact’ (string não vazia) e ‘length’ (número inteiro positivo).**\n        \n\n##### **CT11 - Obter fatos aleatórios com max_length inteiro e limit inteiro**\n\n- **Dado que: O usuário tem acesso à API e ao endpoint https://catfact.ninja/facts**\n    \n- **Quando: O usuário realiza uma requisição HTTP GET para o endpoint, e adiciona os parâmetros max_length = 100 e limit = 5**\n    \n- **Então a requisição é enviada com sucesso.**\n    \n    - **E o código de status da resposta é 200 - OK.**\n        \n    - **E o sistema retorna uma resposta no formato JSON contendo uma lista de 5 fatos.**\n        \n    - **E cada fato na lista tem no máximo 100 caracteres no campo fact.**\n        \n    - **E cada fato na lista tem um valor de length menor ou igual a 100.**\n        \n\n##### **CT12 - Obter fatos com max_length negativo e limit inteiro**\n\n- **Dado que: O usuário tem acesso à API e ao endpoint https://catfact.ninja/facts**\n    \n- **Quando: O usuário realiza uma requisição HTTP GET para o endpoint, e adiciona os parâmetros max_length = -10 e limit = 5**\n    \n- **Então a requisição será enviada com sucesso**\n    \n    - **E o código de status da resposta será 200 - OK**\n        \n    - **E o sistema retornará uma resposta no formato JSON contendo uma estrutura de dados do tipo ‘data’ retornará uma lista vazia.**\n        \n\n##### **CT13 - Obter fatos com max_length inteiro e limit negativo**\n\n- **Dado que: O usuário tem acesso à API e ao endpoint https://catfact.ninja/facts**\n    \n- **Quando: O usuário realiza uma requisição HTTP GET para o endpoint, e adiciona os parâmetros max_length = 100 e limit = -5**\n    \n- **Então a requisição será enviada com sucesso**\n    \n    - **E o código de status da resposta será 200 - OK**\n        \n    - **E o sistema retornará uma resposta no formato JSON contendo a estrutura de dados do tipo ‘fact’ com uma string de tamanho qualquer**\n        \n    - **E o campo ‘length’ terá um valor numérico correspondente ao tamanho do fato retornado.**\n        \n    - **E o limite de fatos retornados será o valor padrão (10)**\n        \n\n##### **CT14 - Obter fatos com max_length negativo e limit negativo**\n\n- **Dado que: O usuário tem acesso à API e ao endpoint https://catfact.ninja/facts**\n    \n- **Quando: O usuário realiza uma requisição HTTP GET para o endpoint, e adiciona os parâmetros max_length = -10 e limit = -5**\n    \n- **Então a requisição será enviada com sucesso**\n    \n    - **E o código de status da resposta será 200 - OK**\n        \n    - **E o sistema retornará uma resposta no formato JSON contendo uma estrutura de dados do tipo ‘data’ retornará uma lista vazia.**\n        \n\n##### **CT15 - Obter fatos com max_length inteiro e limit vazio**\n\n- **Dado que: O usuário tem acesso à API e ao endpoint https://catfact.ninja/facts**\n    \n- **Quando: O usuário realiza uma requisição HTTP GET para o endpoint, e adiciona os parâmetros max_length = 100 e limit = \"\"**\n    \n- **Então:**\n    \n    - **A requisição é enviada com sucesso.**\n        \n    - **O código de status da resposta é 200 - OK.**\n        \n    - **O sistema retorna uma resposta no formato JSON contendo uma lista de fatos (a quantidade padrão de resultados da API).**\n        \n    - **Cada fato na lista tem no máximo 100 caracteres no campo fact.**\n        \n    - **Cada fato na lista tem um valor de length menor ou igual a 100.**\n        \n\n##### **CT16 - Obter fatos com max_length vazio e limit inteiro**\n\n- **Dado que: O usuário tem acesso à API e ao endpoint https://catfact.ninja/facts**\n    \n- **Quando: O usuário realiza uma requisição HTTP GET para o endpoint, e adiciona os parâmetros max_length = \"\" e limit = 5**\n    \n- **Então:**\n    \n    - **A requisição é enviada com sucesso.**\n        \n    - **O código de status da resposta é 200 - OK.**\n        \n    - **O sistema retorna uma resposta no formato JSON contendo uma lista de 5 fatos.**\n        \n    - **Os fatos na lista podem ter qualquer tamanho.**\n        \n\n##### **CT17 - Obter fatos com max_length vazio e limit vazio**\n\n- **Dado que: O usuário tem acesso à API e ao endpoint https://catfact.ninja/facts**\n    \n- **Quando: O usuário realiza uma requisição HTTP GET para o endpoint, e adiciona os parâmetros max_length = \"\" e limit = \"\"**\n    \n- **Então:**\n    \n    - **A requisição é enviada com sucesso.**\n        \n    - **O código de status da resposta é 200 - OK.**\n        \n    - **O sistema retorna uma resposta no formato JSON contendo uma lista de fatos (a quantidade padrão de resultados da API).**\n        \n    - **Os fatos na lista podem ter qualquer tamanho.**\n        \n\nEndFragment"
+		},
+		{
+			"name": "breeds",
+			"item": [
+				{
+					"name": "Get a list of breeds _CT01 - Obter a lista de raças de gatos sem o parâmetro ‘limit’",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT01 - Obter a lista de raças de gatos sem o parâmetro ‘limit’\r",
+									"Dado que o usuário tenha acesso à API\r",
+									"E tenha o endpoint https://catfact.ninja/breeds\r",
+									"Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado\r",
+									"Então a requisição será enviada com sucesso\r",
+									"E o código de status da resposta será 200 - OK\r",
+									"E o sistema retornará uma resposta no formato JSON contendo uma lista de todas as raças de gatos disponíveis\r",
+									"E cada item nessa lista terá informações sobre a raça, como ‘breed’, ‘country’, ‘origin’, ‘coat’, ‘pattern’.\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status é 200 - OK\r",
+									"pm.test(\"1 - O código de status deve ser 200 - OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    });\r",
+									"\r",
+									"// 2. Verificar que o campo 'data' existe e contém uma lista válida\r",
+									"pm.test(\"2 - O campo 'data' deve existir e conter uma lista válida\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(jsonData, \"O campo 'data' existe\").to.have.property(\"data\");\r",
+									"    pm.expect(jsonData.data, \"O campo 'data' contém uma lista válida\").to.be.an(\"array\").that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"// 3. Validar que cada item na lista contém os campos obrigatórios\r",
+									"pm.test(\"3 - Cada item na lista deve conter os campos obrigatórios\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    jsonData.data.forEach((item, index) => {\r",
+									"        pm.expect(item, `O item na posição ${index} não é válido`).to.be.an(\"object\");\r",
+									"\r",
+									"        // Verificar presença dos campos obrigatórios\r",
+									"        pm.expect(item, `O campo 'breed' existe na posição ${index}`).to.have.property(\"breed\");\r",
+									"        pm.expect(item, `O campo 'country' existe na posição ${index}`).to.have.property(\"country\");\r",
+									"        pm.expect(item, `O campo 'origin' existe na posição ${index}`).to.have.property(\"origin\");\r",
+									"        pm.expect(item, `O campo 'coat' existe na posição ${index}`).to.have.property(\"coat\");\r",
+									"        pm.expect(item, `O campo 'pattern' existe na posição ${index}`).to.have.property(\"pattern\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// 4. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"4 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"//\"5 - Verificar valor padrão de paginação quando não é informado um valor do paramentro de limite;\r",
+									"pm.test(\"5 - Verificar valor padrão de paginação quando não é informado um valor do paramentro de limite.\", function (){\r",
+									"    const jsonData = pm.response.json();\r",
+									"pm.expect(jsonData.per_page, \"O valor padrão de per_page deve ser 25\").to.equal(25);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/breeds",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"breeds"
+							]
+						},
+						"description": "Returns a a list of breeds"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a list of breeds_CT02 - Obter a lista de raças de gatos com parâmetro ‘limit’ com valor inteiro positivo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT02 - Obter a lista de raças de gatos com parâmetro ‘limit’ com valor inteiro positivo\r",
+									"Dado que o usuário tenha acesso à API\r",
+									"E tenha o endpoint https://catfact.ninja/breeds\r",
+									"Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado\r",
+									"E adicionar o parâmetro 'limit'\r",
+									"E inserir um value = 5\r",
+									"Então a requisição será enviada com sucesso\r",
+									"E o código de status da resposta será 200 - OK\r",
+									"E o sistema retornará uma resposta no formato JSON contendo uma lista de 5 raças de gatos\r",
+									"E cada item nessa lista terá informações sobre a raça, como ‘breed’, ‘country’, ‘origin’, ‘coat’, ‘pattern’\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status é 200 - OK\r",
+									"pm.test(\"1 - O código de status deve ser 200 - OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// 2. Verificar que o campo 'data' existe e contém uma lista válida\r",
+									"pm.test(\"2 - O campo 'data' deve existir e conter uma lista válida\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(jsonData, \"O campo 'data' está ausente\").to.have.property(\"data\");\r",
+									"    pm.expect(jsonData.data, \"O campo 'data' não contém uma lista válida\").to.be.an(\"array\").that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"// 3. Validar se a quantidade de limite retornada corresponde ao valor informado'\r",
+									"pm.test(\"3 - A quantidade de limite retornada corresponde ao valor informado'\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    var limit = pm.request.url.query.get('limit');\r",
+									"    var parsedValue = parseInt(limit); // Converte para número inteiro\r",
+									"pm.expect(jsonData.data.length, \"O número de fatos retornados corresponde ao valor informado\").to.equal(parsedValue); // Valida que o número de fatos é igual ao valor de limite informado\r",
+									"});\r",
+									"\r",
+									"/// 4. Validar que cada item na lista contém os campos obrigatórios\r",
+									"pm.test(\"4 - Cada item na lista deve conter os campos obrigatórios\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    jsonData.data.forEach((item, index) => {\r",
+									"        pm.expect(item, `O item na posição ${index} não é válido`).to.be.an(\"object\");\r",
+									"\r",
+									"        // Verificar presença dos campos obrigatórios\r",
+									"        pm.expect(item, `O campo 'breed' existe na posição ${index}`).to.have.property(\"breed\");\r",
+									"        pm.expect(item, `O campo 'country' existe na posição ${index}`).to.have.property(\"country\");\r",
+									"        pm.expect(item, `O campo 'origin' existe na posição ${index}`).to.have.property(\"origin\");\r",
+									"        pm.expect(item, `O campo 'coat' existe na posição ${index}`).to.have.property(\"coat\");\r",
+									"        pm.expect(item, `O campo 'pattern' existe na posição ${index}`).to.have.property(\"pattern\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// 5. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"5 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/breeds?limit=5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"breeds"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "5",
+									"description": "Limitar a quantidade de resultados retornados"
+								}
+							]
+						},
+						"description": "Returns a a list of breeds"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a list of breeds _CT03 - Obter a lista de raças de gatos com parâmetro ‘limit’ com valor zero",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT03 - Obter a lista de raças de gatos com parâmetro ‘limit’ com valor zero\r",
+									"Dado que o usuário tenha acesso à API\r",
+									"E tenha o endpoint https://catfact.ninja/breeds\r",
+									"Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado\r",
+									"E adicionar o parâmetro 'limit'\r",
+									"E inserir um value = 0\r",
+									"Então a requisição será enviada com sucesso\r",
+									"E o código de status da resposta será 200 - OK\r",
+									"E o sistema retornará uma resposta no formato JSON contendo uma lista vazia de raças de gatos.\r",
+									"*/\r",
+									"// 1. Teste para verificar se o código de status é 200 - OK\r",
+									"pm.test(\"1 - O código de status deve ser 200 - OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// 2. Verificar que o campo 'data' existe e contém uma lista de fatos\r",
+									"pm.test(\"2 - O campo 'data' deve existir e conter uma lista de fatos\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(jsonData, \"O campo 'data' existe\").to.have.property(\"data\");\r",
+									"    pm.expect(jsonData.data, \"O campo 'data' contém uma lista\").to.be.an(\"array\").that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"// 3. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"3 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"//\"4 - Verificar valor padrão de paginação quando não é informado um valor do paramentro de limite;\r",
+									"pm.test(\"4 - Verificar valor padrão de paginação quando não é informado um valor do paramentro de limite.\", function (){\r",
+									"    const jsonData = pm.response.json();\r",
+									"pm.expect(jsonData.per_page, \"O valor padrão de per_page deve ser 15\").to.equal(15);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/breeds?limit=0",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"breeds"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "0",
+									"description": "Limitar a quantidade de resultados retornados"
+								}
+							]
+						},
+						"description": "Returns a a list of breeds"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a list of breeds_CT04 - Obter a lista de raças de gatos com parâmetro ‘limit’ com valor negativo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT04 - Obter a lista de raças de gatos com parâmetro ‘limit’ com valor negativo\r",
+									"Dado que o usuário tenha acesso à API\r",
+									"E tenha o endpoint https://catfact.ninja/breeds\r",
+									"Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado\r",
+									"E adicionar o parâmetro 'limit'\r",
+									"E inserir um value = -3\r",
+									"Então a requisição será enviada com falha\r",
+									"E o código de status da resposta será  404 - Not Found\r",
+									"E o sistema retornará uma resposta no formato JSON contendo uma mensagem de erro indicando que o parâmetro ‘limit’ deve ser um número inteiro não negativo.\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status é 404 - Not Found\r",
+									"pm.test(\"1 - O código de status deve ser 404 - Not Found\", function () {\r",
+									"pm.response.to.have.status(404); // Verifica se o código de status é 404\r",
+									"});\r",
+									"\r",
+									"// 2. Verificar que a mensagem de erro está presente e correta\r",
+									"pm.test(\"2 - A resposta deve conter uma mensagem de erro indicando que 'limit' deve ser um número inteiro não negativo\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(jsonData, \"O JSON não contém uma mensagem de erro\").to.have.property(\"message\");\r",
+									"    pm.expect(jsonData.message, \"A mensagem de erro está incorreta\").to.include(\"Not Found\");\r",
+									"});\r",
+									"\r",
+									"// 3. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"3 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/breeds?limit=-3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"breeds"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "-3",
+									"description": "Limitar a quantidade de resultados retornados"
+								}
+							]
+						},
+						"description": "Returns a a list of breeds"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a list of breeds_CT05 - Obter a lista de raças de gatos com parâmetro ‘limit’ com valor do tipo string",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT05 - Obter a lista de raças de gatos com parâmetro ‘limit’ com valor do tipo string\r",
+									"Dado que o usuário tenha acesso à API\r",
+									"E tenha o endpoint https://catfact.ninja/breeds\r",
+									"Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado\r",
+									"E adicionar o parâmetro 'limit'\r",
+									"E inserir um value = \"dois\"\r",
+									"Então a requisição será enviada com sucesso\r",
+									"E o código de status da resposta será 200 - OK\r",
+									"E o sistema retornará uma resposta no formato JSON contendo uma lista de raças de gatos.\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status é 200 - OK\r",
+									"pm.test(\"1 - O código de status deve ser 200 - OK\", function () {\r",
+									"pm.response.to.have.status(200); // Verifica se o código de status é 200\r",
+									"});\r",
+									"\r",
+									"//2. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"2 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"//3. Verificar valor padrão de paginação quando não é informado um valor do paramentro de limite;\r",
+									"pm.test(\"3 - Verificar valor padrão de paginação quando não é informado um valor do paramentro de limite.\", function (){\r",
+									"    const jsonData = pm.response.json();\r",
+									"pm.expect(jsonData.per_page, \"O valor padrão de per_page deve ser 25\").to.equal(25);\r",
+									"});\r",
+									"\r",
+									"// 4. Verificar que o campo 'data' existe e contém uma lista de fatos\r",
+									"pm.test(\"4 - O campo 'data' deve existir e conter uma lista de fatos\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(jsonData, \"O campo 'data' existe\").to.have.property(\"data\");\r",
+									"    pm.expect(jsonData.data, \"O campo 'data' contém uma lista\").to.be.an(\"array\").that.is.not.empty;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/breeds?limit=DBR",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"breeds"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "DBR",
+									"description": "Limitar a quantidade de resultados retornados"
+								}
+							]
+						},
+						"description": "Returns a a list of breeds"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a list of breeds _CT06 - Obter a lista de raças de gatos com parâmetro ‘limit’ vazio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/*\r",
+									"CT06 - Obter a lista de raças de gatos com parâmetro ‘limit’ vazio\r",
+									"Dado que o usuário tenha acesso à API\r",
+									"E tenha o endpoint https://catfact.ninja/breeds\r",
+									"Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado\r",
+									"E adicionar o parâmetro 'limit'\r",
+									"E inserir um value = \"\" (texto vazio)\r",
+									"Então a requisição será enviada com sucesso\r",
+									"E o código de status da resposta será 200 - OK\r",
+									"E o sistema retornará uma resposta no formato JSON contendo uma lista de todas as raças de gatos disponíveis (comportamento padrão).\r",
+									"*/\r",
+									"\r",
+									"// 1. Teste para verificar se o código de status é 200 - OK\r",
+									"pm.test(\"1 - O código de status deve ser 200 - OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// 2. Verificar que o campo 'data' existe e contém uma lista válida\r",
+									"pm.test(\"2 - O campo 'data' deve existir e conter uma lista válida\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    pm.expect(jsonData, \"O campo 'data' está ausente\").to.have.property(\"data\");\r",
+									"    pm.expect(jsonData.data, \"O campo 'data' não contém uma lista válida\").to.be.an(\"array\").that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"// 3. Validar que cada item na lista contém os campos obrigatórios\r",
+									"pm.test(\"3 - Cada item na lista deve conter os campos obrigatórios\", function () {\r",
+									"    const jsonData = pm.response.json(); // Extrai o JSON da resposta\r",
+									"    jsonData.data.forEach((item, index) => {\r",
+									"        pm.expect(item, `O item na posição ${index} não é válido`).to.be.an(\"object\");\r",
+									"\r",
+									"        // Verificar presença dos campos obrigatórios\r",
+									"        pm.expect(item, `O campo 'breed' está ausente na posição ${index}`).to.have.property(\"breed\");\r",
+									"        pm.expect(item, `O campo 'country' está ausente na posição ${index}`).to.have.property(\"country\");\r",
+									"        pm.expect(item, `O campo 'origin' está ausente na posição ${index}`).to.have.property(\"origin\");\r",
+									"        pm.expect(item, `O campo 'coat' está ausente na posição ${index}`).to.have.property(\"coat\");\r",
+									"        pm.expect(item, `O campo 'pattern' está ausente na posição ${index}`).to.have.property(\"pattern\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// 4. Verificar cabeçalho 'Content-Type' para garantir que é JSON\r",
+									"pm.test(\"4 - O cabeçalho 'Content-Type' deve ser JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"), \"Content-Type diferente de 'application/json'\").to.equal(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"//5. Verificar valor padrão de paginação quando não é informado um valor do paramentro de limite;\r",
+									"pm.test(\"5 - Verificar valor padrão de paginação quando não é informado um valor do paramentro de limite.\", function (){\r",
+									"    const jsonData = pm.response.json();\r",
+									"pm.expect(jsonData.per_page, \"O valor padrão de per_page deve ser 25\").to.equal(25);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/breeds?limit=",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"breeds"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "",
+									"description": "Limitar a quantidade de resultados retornados"
+								}
+							]
+						},
+						"description": "Returns a a list of breeds"
+					},
+					"response": []
+				}
+			],
+			"description": "1. **Breeds**\n    \n\n**Busca por lista de fatos.**\n\n| **Requisição** |  \n| **URL** | **Autenticação por Requisição:** [<b>https://catfact.ninja/breeds</b>](https://catfact.ninja/breeds) |  \n| **Método** | **GET** |\n\n| **Params** |  \n| **Name** | **Type** | **Value** | **Description** | **Obrigatório** |  \n| **Params** | **‘limit’** | **Do tipo inteiro** | **Limitar a quantidade de resultados retornados** | **Não** |\n\n1. **Cenário de teste**\n    \n\n**CT01 - Obter a lista de raças de gatos sem o parâmetro ‘limit’**\n\n- **Dado que o usuário tenha acesso à API**\n    \n    - **E tenha o endpoint** [<b>https://catfact.ninja/breeds</b>](https://catfact.ninja/breeds)\n        \n- **Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado**\n    \n- **Então a requisição será enviada com sucesso**\n    \n    - **E o código de status da resposta será 200 - OK**\n        \n    - **E o sistema retornará uma resposta no formato JSON contendo uma lista de todas as raças de gatos disponíveis**\n        \n    - **E cada item nessa lista terá informações sobre a raça, como ‘breed’, ‘country’, ‘origin’, ‘coat’, ‘pattern’.**\n        \n\n**CT02 - Obter a lista de raças de gatos com parâmetro ‘limit’ com valor inteiro positivo**\n\n- **Dado que o usuário tenha acesso à API**\n    \n    - **E tenha o endpoint** [<b>https://catfact.ninja/breeds</b>](https://catfact.ninja/breeds)\n        \n- **Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado**\n    \n    - **E adicionar o parâmetro 'limit'**\n        \n    - **E inserir um value = 5**\n        \n- **Então a requisição será enviada com sucesso**\n    \n    - **E o código de status da resposta será 200 - OK**\n        \n    - **E o sistema retornará uma resposta no formato JSON contendo uma lista de 5 raças de gatos**\n        \n    - **E cada item nessa lista terá informações sobre a raça, como ‘breed’, ‘country’, ‘origin’, ‘coat’, ‘pattern’.**\n        \n\n**CT03 - Obter a lista de raças de gatos com parâmetro ‘limit’ com valor zero**\n\n- **E adicionar o parâmetro 'limit'**\n    \n- **E inserir um value = 0**\n    \n- **Então a requisição será enviada com sucesso**\n    \n- **E o código de status da resposta será 200 - OK**\n    \n- **E o sistema retornará uma resposta no formato JSON contendo uma lista vazia de raças de gatos.**\n    \n\n**CT04 - Obter a lista de raças de gatos com parâmetro ‘limit’ com valor negativo**\n\n- **Dado que o usuário tenha acesso à API**\n    \n    - **E tenha o endpoint** [<b>https://catfact.ninja/breeds</b>](https://catfact.ninja/breeds)\n        \n- **Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado**\n    \n    - **E adicionar o parâmetro 'limit'**\n        \n    - **E inserir um value = -3**\n        \n- **Então a requisição será enviada com falha**\n    \n    - **E o código de status da resposta será 400 - Bad Request**\n        \n    - **E o sistema retornará uma resposta no formato JSON contendo uma mensagem de erro indicando que o parâmetro ‘limit’ deve ser um número inteiro não negativo.**\n        \n\n**CT05 - Obter a lista de raças de gatos com parâmetro ‘limit’ com valor do tipo string**\n\n- **Dado que o usuário tenha acesso à API**\n    \n    - **E tenha o endpoint** [<b>https://catfact.ninja/breeds</b>](https://catfact.ninja/breeds)\n        \n- **Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado**\n    \n    - **E adicionar o parâmetro 'limit'**\n        \n    - **E inserir um value = \"dois\"**\n        \n- **Então a requisição será enviada com falha**\n    \n    - **E o código de status da resposta será 400 - Bad Request**\n        \n    - **E o sistema retornará uma resposta no formato JSON contendo uma mensagem de erro indicando que o parâmetro ‘limit’ deve ser um número inteiro válido.**\n        \n\n**CT06 - Obter a lista de raças de gatos com parâmetro ‘limit’ vazio**\n\n- **Dado que o usuário tenha acesso à API**\n    \n    - **E tenha o endpoint** [<b>https://catfact.ninja/breeds</b>](https://catfact.ninja/breeds)\n        \n- **Quando o usuário realizar uma requisição HTTP utilizando o método GET no endpoint mencionado**\n    \n    - **E adicionar o parâmetro 'limit'**\n        \n    - **E inserir um value = \"\" (texto vazio)**\n        \n- **Então a requisição será enviada com sucesso**\n    \n    - **E o código de status da resposta será 200 - OK**\n        \n\n**E o sistema retornará uma resposta no formato JSON contendo uma lista de todas as raças de gatos disponíveis (comportamento padrão).**"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://catfact.ninja"
+		}
+	]
+}
