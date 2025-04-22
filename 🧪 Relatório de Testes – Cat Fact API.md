@@ -1,20 +1,20 @@
-## **🧪 Relatório de Testes – Cat Fact API**
+## **Relatório de Testes – Cat Fact API**
 
-### **📋 Resumo Geral**
+### **Resumo Geral**
 
 * **Data de execução:** 21/04/2025
 
 * **Total de testes executados:** 126
 
-* **Testes aprovados:** ✅ 114
+* **Testes aprovados:**  114
 
-* **Testes reprovados:** ❌ 12
+* **Testes reprovados:**  12
 
-* **Tempo total de execução:** ⏱️ 5.673 ms
+* **Tempo total de execução:**  5.673 ms
 
 ---
 
-### **✅ Cenários com Sucesso Total (Exemplos)**
+### ** Cenários com Sucesso Total (Exemplos)**
 
 | Caso de Teste | Descrição | Resultado |
 | ----- | ----- | ----- |
@@ -27,7 +27,7 @@ Todos os testes destes cenários passaram conforme esperado, com respostas váli
 
 ---
 
-### **❌ Falhas Identificadas**
+### **Falhas Identificadas**
 
 | Caso de Teste | Descrição | Falhas |
 | ----- | ----- | ----- |
@@ -43,7 +43,7 @@ Todos os testes destes cenários passaram conforme esperado, com respostas váli
 
 ---
 
-### **⚠️ Recomendações**
+### **Recomendações**
 
 1. **Validação de parâmetros:**
 
@@ -65,7 +65,7 @@ Todos os testes destes cenários passaram conforme esperado, com respostas váli
 
 ---
 
-### **🏁 Conclusão**
+### **Conclusão**
 
 Apesar das falhas em alguns casos de entrada inválida, a API **Cat Fact** demonstrou boa estabilidade e consistência nas respostas padrão. Com algumas melhorias na validação de parâmetros, a robustez pode ser significativamente aprimorada.
 
