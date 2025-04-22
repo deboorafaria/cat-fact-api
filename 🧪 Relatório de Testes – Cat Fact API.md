@@ -14,7 +14,7 @@
 
 ---
 
-### ** Cenários com Sucesso Total (Exemplos)**
+### **Cenários com Sucesso Total (Exemplos)**
 
 | Caso de Teste | Descrição | Resultado |
 | ----- | ----- | ----- |
