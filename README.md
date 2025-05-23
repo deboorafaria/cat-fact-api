@@ -423,4 +423,4 @@ Busca por lista de fatos.
 
 ## **Relatório de Testes**
 
-[Relatório de Testes](https://github.com/deboorafaria/cat-fact-api/blob/main/%F0%9F%A7%AA%20Relat%C3%B3rio%20de%20Testes%20%E2%80%93%20Cat%20Fact%20API.md)
+[Relatório de Testes](https://github.com/deboorafaria/cat-fact-api/blob/main/Relat%C3%B3rio%20de%20Testes%20%E2%80%93%20Cat%20Fact%20API.md)
